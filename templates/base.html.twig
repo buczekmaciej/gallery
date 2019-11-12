@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}{% endblock %}
+		</title>
+		<script src="https://kit.fontawesome.com/75e13d0c4b.js" crossorigin="anonymous"></script>
+		<style>
+			*
+			{margin:0;padding:0;box-sizing:border-box}
+			body
+			{background-color:#f1f1f1}
+			a
+			{text-decoration:none}
+		</style>
+		{% block stylesheets %}{% endblock %}
+		<link href="{{asset('styles/alerts.css')}}" rel="stylesheet">
+	</head>
+	<body>
+		{% include "alerts.html.twig" %}
+		{% block body %}{% endblock %}
+		{% block javascripts %}{% endblock %}
+	</body>
 </html>

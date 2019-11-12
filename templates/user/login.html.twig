@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Login
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="{{asset('styles/user.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+	<main class="login-container">
+		<a href="{{path('homepage')}}" class="homepage">
+			<i class="fas fa-home"></i>
+			Homepage
+		</a>
+		{{form_start(login)}}
+		{{form_widget(login.Login)}}
+		{{form_widget(login.Password)}}
+		{{form_widget(login.Submit)}}
+		{{form_end(login)}}
+		<p class="bottom-links">
+			<span>
+				You don't have account?
+				<a href="{{path('register')}}">
+					Join now!
+				</a>
+			</span>
+			<span>
+				Forgot password?
+				<a href="">
+					Reset it now!
+				</a>
+			</span>
+		</p>
+	</main>
+{% endblock %}

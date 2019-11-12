@@ -43,6 +43,11 @@ class User
      */
     private $collection;
 
+    /**
+     * @ORM\Column(type="string", length=5, nullable=true)
+     */
+    private $colorSchema;
+
     public function __construct()
     {
         $this->collection = new ArrayCollection();
@@ -123,6 +128,18 @@ class User
         if ($this->collection->contains($collection)) {
             $this->collection->removeElement($collection);
         }
+
+        return $this;
+    }
+
+    public function getColorSchema(): ?string
+    {
+        return $this->colorSchema;
+    }
+
+    public function setColorSchema(?string $colorSchema): self
+    {
+        $this->colorSchema = $colorSchema;
 
         return $this;
     }
