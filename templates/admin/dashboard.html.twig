@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Admin dashboard
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="{{asset('styles/admin.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+	<main class="dashboard-container">
+		<section class="side">
+			<p class="username">
+				<span>
+					Username
+				</span>
+				<a href="">
+					Logout
+					<i class="fas fa-sign-out-alt"></i>
+				</a>
+			</p>
+			<div class="nav">
+				<div class="users">
+					<p>
+						<i class="fas fa-users"></i>
+						<span>
+							Users
+						</span>
+						<i class="fas fa-angle-down"></i>
+					</p>
+				</div>
+				<div class="galleries">
+					<p>
+						<i class="fas fa-images"></i>
+						<span>
+							Images
+						</span>
+						<i class="fas fa-angle-down"></i>
+					</p>
+				</div>
+				<div class="categories">
+					<p>
+						<i class="fas fa-folder-open"></i>
+						<span>
+							Categories
+						</span>
+						<i class="fas fa-angle-down"></i>
+					</p>
+				</div>
+				<div class="tags">
+					<p>
+						<i class="fas fa-tags"></i>
+						<span>
+							Tags
+						</span>
+						<i class="fas fa-angle-down"></i>
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="content">
+			{% block content %}
+				<div class="main-org">
+					<p class="hello">
+						Welcome in Gallery App Dashboard
+					</p>
+				</div>
+			{% endblock %}
+		</section>
+	</main>
+{% endblock %}

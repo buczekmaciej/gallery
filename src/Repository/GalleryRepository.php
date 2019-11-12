@@ -19,6 +19,16 @@ class GalleryRepository extends ServiceEntityRepository
         parent::__construct($registry, Gallery::class);
     }
 
+    public function findImages($query)
+    {
+        return $this->createQueryBuilder('g')
+        ->andWhere('Title LIKE :q OR c.Name LIKE :q')
+        ->leftJoin('g.category','c')
+        ->setParameter('q', $query)
+        ->getQuery()
+        ->getResult();
+    }
+
     // /**
     //  * @return Gallery[] Returns an array of Gallery objects
     //  */

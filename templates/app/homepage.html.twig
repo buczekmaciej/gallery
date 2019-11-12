@@ -1,5 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}
+	Homepage
+{% endblock %}
 
-{% block body %}{% endblock %}
+{% block stylesheets %}
+	<link href="{{asset('styles/app.css')}}" rel="stylesheet">
+	{% if app.session.get('user') %}
+		{% if app.session.get('user').colorSchema =='dark' %}
+			<link href="{{asset('styles/darkApp.css')}}" rel="stylesheet">
+		{% else %}
+			<link href="{{asset('styles/lightApp.css')}}" rel="stylesheet">
+		{% endif %}
+	{% else %}
+		<link href="{{asset('styles/lightApp.css')}}" rel="stylesheet">
+	{% endif %}
+{% endblock %}
+
+{% block navbar %}
+	<i class="fas fa-hamburger"></i>
+{% endblock %}
+
+{% block body %}
+	<main class="homepage-container">
+		{% if pagination is empty %}
+			<section class="error">
+				<i class="fas fa-robot"></i>
+				<p class="err-msg">
+					<span>
+						An error occurred.
+					</span>
+					<span>
+						Please try again later
+					</span>
+				</p>
+			</section>
+		{% else %}
+			{% for elem in pagination %}
+				<p>
+					a
+				</p>
+			{% endfor %}
+		{% endif %}
+	</main>
+{% endblock %}

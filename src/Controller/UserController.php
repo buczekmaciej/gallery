@@ -33,9 +33,8 @@ class UserController extends AbstractController
      * @Route("/login", name="login")
      */
     public function login(Request $request)
-    {   
-        $logged = $this->ls;
-        if($logged == true)
+    {
+        if($this->ls == true)
         {
             return $this->redirectToRoute('homepage', []);
         }
@@ -72,8 +71,7 @@ class UserController extends AbstractController
      */
     public function register(Request $request, EntityManagerInterface $em)
     {
-        $logged = $this->ls;
-        if($logged == true)
+        if($this->ls == true)
         {
             return $this->redirectToRoute('homepage', []);
         }
@@ -115,13 +113,12 @@ class UserController extends AbstractController
      */
     public function logout()
     {
-        $logged = $this->ls;
-        if($logged == false)
+        if($this->ls == false)
         {
             return $this->redirectToRoute('homepage', []);
         }
 
-        $session->remove('user');
+        $this->session->remove('user');
 
         return $this->redirectToRoute('homepage', []);
     }

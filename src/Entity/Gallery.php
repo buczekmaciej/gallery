@@ -42,6 +42,16 @@ class Gallery
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="string", length=300, nullable=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $addedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +113,30 @@ class Gallery
     public function setCategory(?Categories $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getAddedAt(): ?\DateTimeInterface
+    {
+        return $this->addedAt;
+    }
+
+    public function setAddedAt(?\DateTimeInterface $addedAt): self
+    {
+        $this->addedAt = $addedAt;
 
         return $this;
     }
