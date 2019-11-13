@@ -34,4 +34,16 @@ class AdminController extends AbstractController
     {
         return $this->render('admin/dashboard.html.twig', []);
     }
+
+    /**
+     * @Route("/admin/users", name="usersDash")
+     */
+    public function usersDash()
+    {
+        $users = $this->uR->findAll();
+
+        return $this->render('admin/user/manage.html.twig', [
+            'users'=>$users
+        ]);
+    }
 }

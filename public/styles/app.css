@@ -3,32 +3,3 @@
   min-height: 85vh;
   margin: 2.5vh auto;
 }
-
-.error {
-  width: 75%;
-  height: 75vh;
-  margin: 5vh auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-.error .fa-robot {
-  position: absolute;
-  font-size: 25vw;
-  color: rgba(204, 204, 204, 0.25);
-}
-.err-msg {
-  z-index: 5;
-  display: Flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.err-msg span:nth-child(1) {
-  font-size: 5vw;
-  font-weight: bold;
-}
-.err-msg span:nth-child(2) {
-  font-size: 2.2vw;
-}

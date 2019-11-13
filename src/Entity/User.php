@@ -48,6 +48,11 @@ class User
      */
     private $colorSchema;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDisabled;
+
     public function __construct()
     {
         $this->collection = new ArrayCollection();
@@ -140,6 +145,18 @@ class User
     public function setColorSchema(?string $colorSchema): self
     {
         $this->colorSchema = $colorSchema;
+
+        return $this;
+    }
+
+    public function getIsDisabled(): ?bool
+    {
+        return $this->isDisabled;
+    }
+
+    public function setIsDisabled(?bool $isDisabled): self
+    {
+        $this->isDisabled = $isDisabled;
 
         return $this;
     }

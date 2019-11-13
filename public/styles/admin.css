@@ -5,9 +5,22 @@
   display: flex;
   justify-content: space-between;
 }
+
+.fa-toggle-on {
+  color: green;
+}
+.fa-toggle-off {
+  color: red;
+}
+.user-object .fa-bookmark {
+  color: purple;
+}
+.fa-hashtag {
+  cursor: no-drop;
+}
+
 .side {
   width: 20%;
-  border: 1px solid #234;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -29,7 +42,6 @@
   color: blue;
 }
 .nav {
-  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -48,6 +60,7 @@
   padding: 0 0.3em;
   height: 5vh;
   cursor: pointer;
+  margin: 3% 0;
 }
 .nav p i:nth-child(1) {
   flex: 0.2;
@@ -55,14 +68,36 @@
 .nav p span {
   flex: 1;
 }
+.nav div div {
+  display: none;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  width: 85%;
+  margin: 1% auto 2%;
+  font-size: 1.35vw;
+}
+.nav div div a {
+  color: black;
+  margin: 2.5% 0;
+}
+.nav div div a:hover {
+  color: blue;
+  transition: 0.3s;
+}
+.nav div div.expanded {
+  display: flex;
+}
 
 .content {
   width: 77%;
   background-color: #f1f1f1;
   height: 100%;
   border-radius: 8px;
+  padding: 0.5em 1em;
   box-shadow: 0 4px 4px rgb(0, 0, 0, 0.25);
 }
+/* Dash homepage */
 .main-org {
   display: flex;
   justify-content: center;
@@ -71,4 +106,65 @@
   height: 100%;
   font-size: 3vw;
   font-weight: bold;
+}
+
+/* Users display */
+.users-top {
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.7em;
+}
+.users-title {
+  font-size: 1.5vw;
+  font-weight: bold;
+}
+.table-data {
+  width: 100%;
+  overflow: auto;
+  max-height: 85%;
+}
+.users-manage {
+  width: 100%;
+  height: auto;
+  margin: 1% auto;
+  border-spacing: 0;
+}
+.users-manage th {
+  text-align: left;
+  border-bottom: 1px solid gray;
+}
+.users-manage tr:nth-child(1) {
+  border-bottom: 1px solid black;
+}
+.users-manage tr:nth-child(even) {
+  background-color: rgb(196, 241, 255);
+}
+.users-manage tr:nth-child(odd) {
+  background-color: rgb(238, 238, 238);
+}
+.users-manage tr {
+  height: 7vh;
+  font-size: 1.1vw;
+}
+.users-manage th:nth-child(1),
+.users-manage td:nth-child(1) {
+  padding-left: 0.5em;
+}
+.users-manage th:nth-child(3),
+.users-manage td:nth-child(3) {
+  width: 8%;
+  text-align: center;
+}
+.users-manage th:nth-child(4),
+.users-manage td:nth-child(4) {
+  width: 7%;
+  text-align: center;
+}
+.users-manage th:nth-child(5),
+.users-manage td:nth-child(5) {
+  width: 7%;
+  text-align: center;
+  padding-right: 0.5em;
 }

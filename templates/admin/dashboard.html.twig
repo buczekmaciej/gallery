@@ -29,6 +29,20 @@
 						</span>
 						<i class="fas fa-angle-down"></i>
 					</p>
+					<div class="users-actions">
+						<a href="{{path('usersDash')}}">
+							<i class="fas fa-list-alt"></i>
+							<span>
+								Manage users
+							</span>
+						</a>
+						<a href="">
+							<i class="fas fa-bookmark"></i>
+							<span>
+								Users collection
+							</span>
+						</a>
+					</div>
 				</div>
 				<div class="galleries">
 					<p>
@@ -38,6 +52,26 @@
 						</span>
 						<i class="fas fa-angle-down"></i>
 					</p>
+					<div class="galleries-actions">
+						<a href="">
+							<i class="fas fa-list-alt"></i>
+							<span>
+								Manage images
+							</span>
+						</a>
+						<a href="">
+							<i class="fas fa-trash-alt"></i>
+							<span>
+								Delete images
+							</span>
+						</a>
+						<a href="">
+							<i class="fas fa-plus"></i>
+							<span>
+								Add images
+							</span>
+						</a>
+					</div>
 				</div>
 				<div class="categories">
 					<p>
@@ -47,6 +81,26 @@
 						</span>
 						<i class="fas fa-angle-down"></i>
 					</p>
+					<div class="categories-actions">
+						<a href="">
+							<i class="fas fa-list-alt"></i>
+							<span>
+								Manage categories
+							</span>
+						</a>
+						<a href="">
+							<i class="fas fa-trash-alt"></i>
+							<span>
+								Remove categories
+							</span>
+						</a>
+						<a href="">
+							<i class="fas fa-plus"></i>
+							<span>
+								Add categories
+							</span>
+						</a>
+					</div>
 				</div>
 				<div class="tags">
 					<p>
@@ -56,11 +110,32 @@
 						</span>
 						<i class="fas fa-angle-down"></i>
 					</p>
+					<div class="tags-actions">
+						<a href="">
+							<i class="fas fa-list-alt"></i>
+							<span>
+								Manage tags
+							</span>
+						</a>
+						<a href="">
+							<i class="fas fa-trash-alt"></i>
+							<span>
+								Remove tags
+							</span>
+						</a>
+						<a href="">
+							<i class="fas fa-plus"></i>
+							<span>
+								Add tags
+							</span>
+						</a>
+					</div>
 				</div>
 			</div>
 		</section>
 
 		<section class="content">
+			{% block topContent %}{% endblock %}
 			{% block content %}
 				<div class="main-org">
 					<p class="hello">
@@ -70,4 +145,8 @@
 			{% endblock %}
 		</section>
 	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{asset('js/dashboard.js')}}"></script>
 {% endblock %}
