@@ -42,11 +42,8 @@ class AdminController extends AbstractController
      */
     public function usersDash()
     {
-        // Get all users
-        $users = $this->uR->findAll();
-
         return $this->render('admin/user/manage.html.twig', [
-            'users'=>$users
+            'users'=>$this->uR->findAll()
         ]);
     }
 
@@ -72,11 +69,8 @@ class AdminController extends AbstractController
      */
     public function imagesDash()
     {
-        // Get all images
-        $images = $this->gR->findAll();
-
         return $this->render('admin/images/manage.html.twig', [
-            'images'=>$images
+            'images'=>$this->gR->findAll()
         ]);
     }
 
@@ -87,6 +81,7 @@ class AdminController extends AbstractController
     {
         // Remove specific image
         $this->em->remove($this->gR->findBy(['id'=>$id])[0]);
+        $this->em->flush();
         $this->addFlash('success', 'Image has been removed');
 
         return $this->redirectToRoute('imagesDash', []);
@@ -97,13 +92,16 @@ class AdminController extends AbstractController
      */
     public function loadImage(Request $request)
     {
+        // Call image upload form
         $uploadForm = $this->createForm(ImgLoadType::class);
         $uploadForm->handleRequest($request);
 
         if($uploadForm->isSubmitted() && $uploadForm->isValid())
         {
+            // Get object based on form data
             $image = $uploadForm->getData();
 
+            // Set date of creation and file place on server
             $image->setAddedAt(new \DateTime());
             $newFile = uniqid().$image->getImage()->guessExtension();
 
@@ -119,6 +117,7 @@ class AdminController extends AbstractController
                 return $this->redirectToRoute('loadImage', []);
             }
             
+            // Insert new object to database
             $this->em->persist($image);
             $this->addFlash('success', 'Image has been uploaded');
             return $this->redirectToRoute('imagesDash', []);
@@ -127,5 +126,68 @@ class AdminController extends AbstractController
         return $this->render('admin/images/upload.html.twig', [
             'upload'=>$uploadForm->createView()
         ]);
+    }
+
+    /**
+     * @Route("/admin/categories", name="categoriesDash", methods={"GET"})
+     */
+    public function categoriesDash()
+    {
+        return $this->render('admin/categories/manage.html.twig', [
+            'categories'=>$this->cR->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/category/{id}/tags", name="catTags", methods={"GET"})
+     */
+    public function catTags($id)
+    {
+        return $this->render('admin/categories/tags.html.twig', [
+            'cat'=>$this->cR->findBy(['id'=>$id])[0]
+        ]);
+    }
+
+    /**
+     * @Route("/admin/category/{id}/images", name="catImgs", methods={"GET"})
+     */
+    public function catImgs($id)
+    {
+        $cat = $this->cR->findBy(['id'=>$id])[0];
+        foreach($cat->getGalleries() as &$img)
+        {
+            $img->setImage(stream_get_contents($img->getImage()));
+        }
+
+        return $this->render('admin/categories/imgs.html.twig', [
+            'cat'=>$cat
+        ]);
+    }
+
+    /**
+     * @Route("/admin/category/{id}/remove", name="catDel", methods={"DELETE"})
+     */
+    public function catDel($id)
+    {
+        // Get category
+        $cat = $this->cR->findBy(['id'=>$id])[0];
+        // Remove images connected to this category
+        foreach ($cat->getGalleries() as $img) {
+            $this->em->remove($img);
+        }
+        // If any of tags connected to this category has only one related category remove it
+        foreach ($cat->getTags() as $tag) {
+            if(sizeof($tag->getCategories()) === 1)
+            {
+                $this->em->remove($tag);
+            }
+        }
+
+        // Remove category itself
+        $this->em->remove($cat);
+        $this->em->flush();
+        $this->addFlash('success', 'Category has been removed');
+
+        return $this->redirectToRoute('categoriesDash', []);
     }
 }

@@ -1,0 +1,41 @@
+{% extends "admin/dashboard.html.twig" %}
+
+{% block title %}
+	{{cat.Name}}
+	tags
+{% endblock %}
+
+{% block topContent %}
+	<div class="cont-top">
+		{% set tags = cat.Tags|length %}
+		<p class="tags-title">
+			{% if tags > 1 %}
+				{{tags}}
+				{% if tags == 1 %}
+					tag
+				{% else %}
+					tags
+				{% endif %}
+			{% else %}
+				None tags
+			{% endif %}
+			has been found
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+	{% if cat is not empty %}
+		<div class="table-data">
+			<div class="tags-manage">
+				{% for tags in cat.Tags %}
+					<p class="tags-object">
+						{{tags.Name}}
+					</p>
+				{% endfor %}
+			</div>
+		</div>
+	{% else %}
+		{% include "error.html.twig" %}
+	{% endif %}
+{% endblock %}

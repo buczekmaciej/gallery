@@ -1,0 +1,69 @@
+{% extends "admin/dashboard.html.twig" %}
+
+{% block title %}
+	Categories manage
+{% endblock %}
+
+{% block topContent %}
+	<div class="cont-top">
+		{% set cats = categories|length %}
+		<p class="categories-title">
+			{% if cats > 1 %}
+				{{cats}}
+				{% if cats == 1 %}
+					category
+				{% else %}
+					categories
+				{% endif %}
+			{% else %}
+				None categories
+			{% endif %}
+			has been found
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+	{% if categories is not empty %}
+		<div class="table-data">
+			<table class="categories-manage">
+				<tr>
+					<th>
+						Name
+					</th>
+					<th>
+						Tags
+					</th>
+					<th>
+						Images
+					</th>
+					<th></th>
+				</tr>
+				{% for category in categories %}
+					<tr class="category-object">
+						<td>
+							{{category.Name}}
+						</td>
+						<td>
+							<a href="{{path('catTags',{'id':category.id})}}">
+								{{category.Tags|length}}
+							</a>
+						</td>
+						<td>
+							<a href="{{path('catImgs',{'id':category.id})}}">
+								{{category.galleries|length}}
+							</a>
+						</td>
+						<td>
+							<a href="{{path('catDel',{'id':category.id})}}">
+								<i class="fas fa-trash-alt"></i>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	{% else %}
+		{% include "error.html.twig" %}
+	{% endif %}
+{% endblock %}

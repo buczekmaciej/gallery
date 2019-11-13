@@ -1,0 +1,39 @@
+{% extends "admin/dashboard.html.twig" %}
+
+{% block title %}
+	{{cat.Name}}
+	images
+{% endblock %}
+
+{% block topContent %}
+	<div class="cont-top">
+		{% set imgs = cat.Images|length %}
+		<p class="imgs-title">
+			{% if imgs > 1 %}
+				{{imgs}}
+				{% if imgs == 1 %}
+					image
+				{% else %}
+					images
+				{% endif %}
+			{% else %}
+				None images
+			{% endif %}
+			has been found
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+	{% if cat is not empty %}
+		<div class="table-data">
+			<div class="imgs-manage">
+				{% for img in cat.galleries %}
+					<img class="img-object" src="{{asset('gallery/' ~ img.Image)}}" alt="IMG for {{cat.Name}}">
+				{% endfor %}
+			</div>
+		</div>
+	{% else %}
+		{% include "error.html.twig" %}
+	{% endif %}
+{% endblock %}
