@@ -1,0 +1,33 @@
+{% extends "admin/dashboard.html.twig" %}
+
+{% block title %}
+	Load image
+{% endblock %}
+
+{% block topContent %}
+	<div class="cont-top">
+		<p class="upload-title">
+			Upload image to server
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div class="load-form">
+		{{form_start(upload)}}
+		<div class="img">
+			{{form_label(upload.Image)}}
+			{{form_widget(upload.Image)}}
+		</div>
+		<div class="title">
+			{{form_label(upload.title)}}
+			{{form_widget(upload.title)}}
+		</div>
+		<div class="category">
+			{{form_label(upload.category)}}
+			{{form_widget(upload.category)}}
+		</div>
+		{{form_widget(upload.Submit)}}
+		{{form_end(upload)}}
+	</div>
+{% endblock %}

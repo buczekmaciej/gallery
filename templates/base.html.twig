@@ -11,9 +11,9 @@
 		<link href="{{asset('styles/alerts.css')}}" rel="stylesheet">
 	</head>
 	<body>
-		{% include "alerts.html.twig" %}
 		{% block navbar %}{% endblock %}
 		{% block body %}{% endblock %}
 		{% block javascripts %}{% endblock %}
+		<script src="{{asset('js/alerts.js')}}"></script>
 	</body>
 </html>

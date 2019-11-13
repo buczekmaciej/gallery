@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepository;
 use App\Repository\GalleryRepository;
 use App\Repository\TagsRepository;
 use App\Repository\CategoriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\ImgLoadType;
 
 class AdminController extends AbstractController
 {
@@ -70,10 +72,60 @@ class AdminController extends AbstractController
      */
     public function imagesDash()
     {
+        // Get all images
         $images = $this->gR->findAll();
 
         return $this->render('admin/images/manage.html.twig', [
             'images'=>$images
+        ]);
+    }
+
+    /**
+     * @Route("/admin/image/{id}", name="deleteImage", methods={"DELETE"})
+     */
+    public function deleteImage($id)
+    {
+        // Remove specific image
+        $this->em->remove($this->gR->findBy(['id'=>$id])[0]);
+        $this->addFlash('success', 'Image has been removed');
+
+        return $this->redirectToRoute('imagesDash', []);
+    }
+
+    /**
+     * @Route("/admin/images/new", name="loadImage", methods={"GET","POST"})
+     */
+    public function loadImage(Request $request)
+    {
+        $uploadForm = $this->createForm(ImgLoadType::class);
+        $uploadForm->handleRequest($request);
+
+        if($uploadForm->isSubmitted() && $uploadForm->isValid())
+        {
+            $image = $uploadForm->getData();
+
+            $image->setAddedAt(new \DateTime());
+            $newFile = uniqid().$image->getImage()->guessExtension();
+
+            try {
+                $image->getImage()->move(
+                    'gallery',
+                    $newFile
+                );
+
+                $image->setImage($newFile);
+            } catch (\Throwable $th) {
+                $this->addFlash('danger', 'Error occurred: '.$e);
+                return $this->redirectToRoute('loadImage', []);
+            }
+            
+            $this->em->persist($image);
+            $this->addFlash('success', 'Image has been uploaded');
+            return $this->redirectToRoute('imagesDash', []);
+        }
+
+        return $this->render('admin/images/upload.html.twig', [
+            'upload'=>$uploadForm->createView()
         ]);
     }
 }

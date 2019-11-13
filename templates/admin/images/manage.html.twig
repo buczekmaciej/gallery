@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block topContent %}
-	<div class="users-top">
+	<div class="cont-top">
 		{% set images = images|length %}
 		<p class="users-title">
 			{% if images > 1 %}
@@ -35,20 +35,21 @@
 						Title
 					</th>
 					<th>
-						<i class="fas fa-folder-open"></i>
+						<i class="fas fa-folder-open" title="Category"></i>
 					</th>
 					<th>
-						<i class="fas fa-bookmarks"></i>
+						<i class="fas fa-bookmark" title="Saved"></i>
 					</th>
 					<th>
-						<i class="fas fa-heart"></i>
+						<i class="fas fa-heart" title="Likes"></i>
 					</th>
 					<th>
-						<i class="fas fa-eye-open"></i>
+						<i class="fas fa-eye" title="Views"></i>
 					</th>
 					<th>
-						<i class="fas fa-calendar-add"></i>
+						<i class="fas fa-calendar-plus" title="Added at"></i>
 					</th>
+					<th></th>
 				</tr>
 				{% for image in images %}
 					<tr class="image-object">
@@ -72,6 +73,11 @@
 						</td>
 						<td>
 							{{image.addedAt|date('d-m-Y')}}
+						</td>
+						<td>
+							<a href="{{path('deleteImage',{'id':image.id})}}">
+								<i class="fas fa-trash-alt"></i>
+							</a>
 						</td>
 					</tr>
 				{% endfor %}
