@@ -28,7 +28,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/dashboard", name="dashboard")
+     * @Route("/admin/dashboard", name="dashboard", methods={"GET"})
      */
     public function dashboard()
     {
@@ -36,14 +36,44 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/users", name="usersDash")
+     * @Route("/admin/users", name="usersDash", methods={"GET"})
      */
     public function usersDash()
     {
+        // Get all users
         $users = $this->uR->findAll();
 
         return $this->render('admin/user/manage.html.twig', [
             'users'=>$users
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user/{id}", name="userCollection", methods={"GET"})
+     */
+    public function userCollection($id)
+    {
+        // Get specific user and translate file name from stream
+        $user = $this->uR->findBy(['id'=>$id])[0];
+        foreach($user->getCollection() as &$coll)
+        {
+            $coll->setImage(stream_get_contents($coll->getImage()));
+        }
+
+        return $this->render('admin/user/collection.html.twig', [
+            'user'=>$user
+        ]);
+    }
+
+    /**
+     * @Route("/admin/images", name="imagesDash", methods={"GET"})
+     */
+    public function imagesDash()
+    {
+        $images = $this->gR->findAll();
+
+        return $this->render('admin/images/manage.html.twig', [
+            'images'=>$images
         ]);
     }
 }

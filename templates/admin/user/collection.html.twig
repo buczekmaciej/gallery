@@ -1,0 +1,35 @@
+{% extends "admin/dashboard.html.twig" %}
+
+{% block title %}
+	{{user.Login}}
+	collection
+{% endblock %}
+
+{% block topContent %}
+	<div class="users-top">
+		{% set images = user.collection|length %}
+		<p class="users-collection-title">
+			{% if images > 1 %}
+				{{images}}
+				objects
+			{% else %}
+				None object
+			{% endif %}
+			has been found in
+			{{user.Login}}
+			collection
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div class="users-collection">
+		{% if user.collection is not empty %}
+			{% for image in user.collection %}
+				<img src="{{asset('gallery/' ~ image.Image)}}" alt="Collection image number {{loop.index}}" class="coll-img" id="{{image.id}}">
+			{% endfor %}
+		{% else %}
+			{% include "error.html.twig" %}
+		{% endif %}
+	</div>
+{% endblock %}

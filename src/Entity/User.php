@@ -39,7 +39,7 @@ class User
     private $resetHash;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Gallery")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Gallery", mappedBy="saves")
      */
     private $collection;
 
@@ -53,9 +53,21 @@ class User
      */
     private $isDisabled;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Gallery", mappedBy="likes")
+     */
+    private $likes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Gallery", mappedBy="views")
+     */
+    private $views;
+
     public function __construct()
     {
         $this->collection = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->views = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,6 +169,62 @@ class User
     public function setIsDisabled(?bool $isDisabled): self
     {
         $this->isDisabled = $isDisabled;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Gallery[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Gallery $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->addLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Gallery $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            $like->removeLike($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Gallery[]
+     */
+    public function getViews(): Collection
+    {
+        return $this->views;
+    }
+
+    public function addView(Gallery $view): self
+    {
+        if (!$this->views->contains($view)) {
+            $this->views[] = $view;
+            $view->addView($this);
+        }
+
+        return $this;
+    }
+
+    public function removeView(Gallery $view): self
+    {
+        if ($this->views->contains($view)) {
+            $this->views->removeElement($view);
+            $view->removeView($this);
+        }
 
         return $this;
     }
