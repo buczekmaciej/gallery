@@ -11,6 +11,8 @@ use App\Repository\TagsRepository;
 use App\Repository\CategoriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ImgLoadType;
+use App\Form\CategoryType;
+use App\Form\TagsType;
 
 class AdminController extends AbstractController
 {
@@ -139,6 +141,30 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/categoires/add", name="newCategory", methods={"GET", "POST"})
+     */
+    public function newCategory(Request $request)
+    {
+        $catForm = $this->createForm(CategoryType::class);
+        $catForm->handleRequest($request);
+
+        if($catForm->isSubmitted() && $catForm->isValid())
+        {
+            $category = $catForm->getData();
+
+            $this->em->persist($category);
+            $this->em->flush();
+            $this->addFlash('success', 'Category has been created');
+
+            return $this->redirectToRoute('categoriesDash', []);
+        }
+
+        return $this->render('admin/categories/add.html.twig', [
+            'catForm'=>$catForm->createView()
+        ]);
+    }
+
+    /**
      * @Route("/admin/category/{id}/tags", name="catTags", methods={"GET"})
      */
     public function catTags($id)
@@ -189,5 +215,51 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'Category has been removed');
 
         return $this->redirectToRoute('categoriesDash', []);
+    }
+
+    /**
+     * @Route("/admin/tags", name="tagsDash", methods={"GET"})
+     */
+    public function tagsDash()
+    {
+        return $this->render('admin/tags/manage.html.twig', [
+            'tags'=>$this->tR->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/tags/add", name="tagsAdd", methods={"GET", "POST"})
+     */
+    public function tagsAdd(Request $request)
+    {
+        $tagsForm = $this->createForm(TagsType::class);
+        $tagsForm->handleRequest($request);
+
+        if($tagsForm->isSubmitted() && $tagsForm->isValid())
+        {
+            $tag = $tagsForm->getData();
+
+            $this->em->persist($tag);
+            $this->em->flush();
+            $this->addFlash('success', 'Tag has been created');
+
+            return $this->redirectToRoute('tagsDash', []);
+        }
+
+        return $this->render('admin/tags/add.html.twig', [
+            'tagForm'=>$tagsForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/tag/{id}", name="tagDel", methods={"DELETE"})
+     */
+    public function tagDel($id)
+    {
+        $this->em->remove($this->em->findBy(['id'=>$id])[0]);
+        $this->em-flush();
+        $this->addFlash('success', 'Tag has been removed');
+
+        return $this->redirectToRoute('tagsDash', []);
     }
 }

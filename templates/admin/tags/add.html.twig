@@ -1,0 +1,25 @@
+{% extends "admin/dashboard.html.twig" %}
+
+{% block title %}
+	Add tag
+{% endblock %}
+
+{% block topContent %}
+	<div class="cont-top">
+		<p class="create-title">
+			Create tag
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div class="create-form">
+		{{form_start(tagForm)}}
+		<div class="name">
+			{{form_label(tagForm.Name)}}
+			{{form_widget(tagForm.Name)}}
+		</div>
+		{{form_widget(tagForm.Submit)}}
+		{{form_end(tagForm)}}
+	</div>
+{% endblock %}

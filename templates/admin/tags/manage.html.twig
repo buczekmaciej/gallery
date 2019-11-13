@@ -1,0 +1,43 @@
+{% extends "admin/dashboard.html.twig" %}
+
+{% block title %}
+	Tags manage
+{% endblock %}
+
+{% block topContent %}
+	<div class="cont-top">
+		{% set tags = tags|length %}
+		<p class="tags-title">
+			{% if tags > 1 %}
+				{{tags}}
+				{% if tags == 1 %}
+					tag
+				{% else %}
+					tags
+				{% endif %}
+			{% else %}
+				None tags
+			{% endif %}
+			has been found
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+	{% if tags is not empty %}
+		<div class="tags-manage">
+			{% for tag in tags %}
+				<p class="tags-object">
+					<span>
+						{{tag.Name}}
+					</span>
+					<a href="{{path('tagDel', {'id':tag.id})}}">
+						<i class="fas fa-trash-alt"></i>
+					</a>
+				</p>
+			{% endfor %}
+		</div>
+	{% else %}
+		{% include "error.html.twig" %}
+	{% endif %}
+{% endblock %}
