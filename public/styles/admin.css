@@ -272,6 +272,10 @@ td:nth-child(1) {
   cursor: pointer;
 }
 
+td img {
+  max-height: 12vh;
+}
+
 .create-form {
   width: 65%;
   height: 85%;

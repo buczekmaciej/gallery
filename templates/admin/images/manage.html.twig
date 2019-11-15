@@ -54,7 +54,7 @@
 				{% for image in images %}
 					<tr class="image-object">
 						<td>
-							<img src="{{asset('gallery/' ~ image.Image)}}" alt="Image with id {{image.id}}">
+							<img src="{{asset('gallery/' ~ image.Image)}}" class="img-display" alt="Image with id {{image.id}}">
 						</td>
 						<td>
 							{{image.Title}}

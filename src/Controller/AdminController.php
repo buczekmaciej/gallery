@@ -50,7 +50,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user/{id}", name="userCollection", methods={"GET"})
+     * @Route("/admin/user/{id}/collection", name="userCollection", methods={"GET"})
      */
     public function userCollection($id)
     {

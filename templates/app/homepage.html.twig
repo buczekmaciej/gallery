@@ -20,6 +20,9 @@
 {% block navbar %}
 	<div class="navbar">
 		<i class="fas fa-ellipsis-h"></i>
+		<a href="{{path('homepage')}}">
+			Gallery
+		</a>
 	</div>
 {% endblock %}
 
@@ -30,7 +33,9 @@
 		{% else %}
 			{% for elem in pagination %}
 				<div class="homepage-img">
-					<img src="{{asset('gallery/' ~ elem.Image)}}" alt="Homepage img N° {{elem.id}}">
+					<a href="{{path('imgDisp', {'id':elem.id})}}">
+						<img src="{{asset('gallery/' ~ elem.Image)}}" alt="Homepage img N° {{elem.id}}">
+					</a>
 				</div>
 			{% endfor %}
 		{% endif %}

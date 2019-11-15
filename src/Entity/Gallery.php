@@ -154,7 +154,7 @@ class Gallery
     public function addSave(User $save): self
     {
         if (!$this->saves->contains($save)) {
-            $this->views[] = $save;
+            $this->saves[] = $save;
         }
 
         return $this;
