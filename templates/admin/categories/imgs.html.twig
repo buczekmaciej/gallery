@@ -7,9 +7,9 @@
 
 {% block topContent %}
 	<div class="cont-top">
-		{% set imgs = cat.Images|length %}
+		{% set imgs = cat.Galleries|length %}
 		<p class="imgs-title">
-			{% if imgs > 1 %}
+			{% if imgs > 0 %}
 				{{imgs}}
 				{% if imgs == 1 %}
 					image

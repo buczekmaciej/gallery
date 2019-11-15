@@ -71,8 +71,14 @@ class AdminController extends AbstractController
      */
     public function imagesDash()
     {
+        $images = $this->gR->findAll();
+        foreach($images as &$img)
+        {
+            $img->setImage(stream_get_contents($img->getImage()));
+        }
+
         return $this->render('admin/images/manage.html.twig', [
-            'images'=>$this->gR->findAll()
+            'images'=>$images
         ]);
     }
 
@@ -105,7 +111,7 @@ class AdminController extends AbstractController
 
             // Set date of creation and file place on server
             $image->setAddedAt(new \DateTime());
-            $newFile = uniqid().$image->getImage()->guessExtension();
+            $newFile = uniqid().'.'.$image->getImage()->guessExtension();
 
             try {
                 $image->getImage()->move(
@@ -114,15 +120,17 @@ class AdminController extends AbstractController
                 );
 
                 $image->setImage($newFile);
-            } catch (\Throwable $th) {
+            
+                // Insert new object to database
+                $this->em->persist($image);
+                $this->em->flush();
+                $this->addFlash('success', 'Image has been uploaded');
+                return $this->redirectToRoute('imagesDash', []);
+            }
+            catch (\Throwable $th) {
                 $this->addFlash('danger', 'Error occurred: '.$e);
                 return $this->redirectToRoute('loadImage', []);
             }
-            
-            // Insert new object to database
-            $this->em->persist($image);
-            $this->addFlash('success', 'Image has been uploaded');
-            return $this->redirectToRoute('imagesDash', []);
         }
 
         return $this->render('admin/images/upload.html.twig', [

@@ -18,7 +18,9 @@
 {% endblock %}
 
 {% block navbar %}
-	<i class="fas fa-hamburger"></i>
+	<div class="navbar">
+		<i class="fas fa-ellipsis-h"></i>
+	</div>
 {% endblock %}
 
 {% block body %}
@@ -27,10 +29,14 @@
 			{% include "error.html.twig" %}
 		{% else %}
 			{% for elem in pagination %}
-				<p>
-					a
-				</p>
+				<div class="homepage-img">
+					<img src="{{asset('gallery/' ~ elem.Image)}}" alt="Homepage img N° {{elem.id}}">
+				</div>
 			{% endfor %}
 		{% endif %}
 	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{asset('js/menu.js')}}"></script>
 {% endblock %}

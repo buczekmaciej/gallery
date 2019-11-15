@@ -23,7 +23,7 @@
 			{{form_label(catForm.Tags)}}
 			<div class="tags-org">
 				{% for tag in catForm.Tags %}
-					<div class="tag">
+					<div class="tag" title="{{tag.vars.label}}">
 						{{form_widget(tag)}}
 						{{form_label(tag)}}
 					</div>

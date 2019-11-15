@@ -8,11 +8,15 @@
 	<div class="cont-top">
 		{% set users = users|length %}
 		<p class="users-title">
-			{{users}}
-			{% if users > 1 %}
-				users
+			{% if users > 0 %}
+				{{users}}
+				{% if users == 1 %}
+					user
+				{% else %}
+					users
+				{% endif %}
 			{% else %}
-				user
+				None users
 			{% endif %}
 			has been found
 		</p>

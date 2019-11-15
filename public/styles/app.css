@@ -1,5 +1,98 @@
+.navbar {
+  height: 5vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  background-color: rgb(102, 149, 96);
+}
+.fa-ellipsis-h {
+  transition: 0.25s;
+  cursor: pointer;
+}
+
 .homepage-container {
   width: 95%;
   min-height: 85vh;
   margin: 2.5vh auto;
+}
+
+/* Image display page */
+.image-display {
+  min-height: 90vh;
+  height: auto;
+  width: 80%;
+  margin: 2.5vh auto;
+}
+.image-object img {
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 4px 4px rgb(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+.image-data {
+  height: 15vh;
+  margin: 1% auto;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px rgb(0, 0, 0, 0.25);
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.image-data .left {
+  flex: 5;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.image-data .stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  height: 90%;
+}
+.image-data .stats p {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+.image-data .stats p a,
+.image-data .stats p i {
+  flex: 0.2;
+  text-align: center;
+  font-size: 1vw;
+}
+.image-data .stats p span {
+  flex: 1;
+  font-size: 1vw;
+}
+.image-data .image-title {
+  width: 100%;
+  font-size: 1.3vw;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.image-data .image-added-at {
+  font-size: 1.1vw;
+  color: gray;
+  cursor: default;
+}
+.image-data .fa-heart {
+  color: red;
+}
+.image-data .fa-bookmark {
+  color: purple;
+}
+
+.image-likes button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }

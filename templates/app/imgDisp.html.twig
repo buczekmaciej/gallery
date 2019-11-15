@@ -1,0 +1,99 @@
+{% extends "app/homepage.html.twig" %}
+
+{% block title %}
+	{% if img is not empty %}
+		{{img.title}}
+	{% else %}
+		Image not found | 404
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+	<main class="image-display">
+		{% if img is not empty %}
+			<section class="image-object">
+				<img src="{{asset('gallery/' ~ img.Image)}}" alt="IMG Id: {{img.id}} || IMG Title: {{img.title}}">
+			</section>
+			<section class="image-data">
+				<div class="left">
+					<p class="image-title">
+						{{img.title}}
+					</p>
+					<p class="image-added-at">
+						{{img.addedAt|date('M d, Y')}}
+					</p>
+				</div>
+				<div class="stats">
+					<div class="image-likes">
+						{% if app.session.get('user') %}
+
+							{% set liked = false %}
+							{% for like in img.likes %}
+								{% if app.session.get('user').Login == like.Login %}
+									{% set liked = true %}
+								{% endif %}
+							{% endfor %}
+
+							{% if liked == true %}
+								<form action="{{path('likeImg', {'id':img.id})}}" method="POST">
+									<button>
+										<i class="fas fa-heart"></i>
+									</button>
+								</form>
+							{% else %}
+								<form action="{{path('likeImg', {'id':img.id})}}" method="POST">
+									<button>
+										<i class="far fa-heart"></i>
+									</button>
+								</form>
+							{% endif %}
+						{% else %}
+							<i class="fas fa-heart"></i>
+						{% endif %}
+						<span>
+							{{img.likes|length}}
+						</span>
+					</div>
+					<div class="image-saves">
+						{% if app.session.get('user') %}
+
+							{% set saved = false %}
+							{% for save in img.saves %}
+								{% if app.session.get('user').Login == save.Login %}
+									{% set saved = true %}
+								{% endif %}
+							{% endfor %}
+
+							{% if saved == true %}
+								<form action="{{path('saveImg', {'id':img.id})}}" method="POST">
+									<button>
+										<i class="fas fa-bookmark"></i>
+									</button>
+								</form>
+							{% else %}
+								<form action="{{path('saveImg', {'id':img.id})}}" method="POST">
+									<button>
+										<i class="far fa-bookmark"></i>
+									</button>
+								</form>
+							{% endif %}
+						{% else %}
+							<i class="fas fa-bookmark"></i>
+						{% endif %}
+						<span>
+							{{img.saves|length}}
+						</span>
+					</div>
+					<p class="image-views">
+						<i class="fas fa-eye"></i>
+						<span>
+							{{img.views|length}}
+						</span>
+					</p>
+				</div>
+			</section>
+		{% else %}
+			{% include "error.html.twig" %}
+		{% endif %}
+	</main>
+{% endblock %}
