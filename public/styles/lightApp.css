@@ -1,3 +1,43 @@
 .homepage-container {
   background-color: #f1f1f1;
 }
+.navbar {
+  background-color: rgb(102, 149, 96);
+}
+.fa-ellipsis-h {
+  color: #f1f1f1;
+}
+.navbar a {
+  color: #f1f1f1;
+}
+.navbar .drop-menu {
+  background-color: #f1f1f1;
+}
+.drop-menu a button {
+  background-color: rgb(102, 149, 96);
+  color: #f1f1f1;
+}
+.image-data,
+.user-img-data {
+  background-color: #f1f1f1;
+}
+.image-added-at {
+  color: gray;
+}
+.paginator {
+  color: #000;
+}
+.positioner,
+.page,
+.first,
+.previous,
+.next,
+.last {
+  border: 1px solid #000;
+}
+.fa-heart {
+  color: red;
+}
+.fa-bookmark {
+  color: purple;
+}

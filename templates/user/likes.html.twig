@@ -1,0 +1,67 @@
+{% extends "app/homepage.html.twig" %}
+
+{% block title %}
+	{{app.session.get('user').Login}}
+	likes
+{% endblock %}
+
+{% block body %}
+	<main class="user-image-collection">
+		{% for elem in likes|reverse %}
+			<section class="user-coll-img">
+				<img src="{{asset('gallery/' ~ elem.Image)}}">
+				<div class="user-img-data">
+					<div class="left">
+						<p class="img-title">
+							{{elem.title}}
+						</p>
+						<p class="img-date">
+							{{elem.addedAt|date('M d, Y')}}
+						</p>
+					</div>
+					<div class="img-stats">
+						<div class="image-saves">
+							{% set saved = false %}
+							{% for save in elem.saves %}
+								{% if app.session.get('user').Login == save.Login %}
+									{% set saved = true %}
+								{% endif %}
+							{% endfor %}
+
+							{% if saved == true %}
+								<form action="{{path('saveImg', {'id':elem.id})}}" method="POST">
+									<button>
+										<i class="fas fa-bookmark"></i>
+									</button>
+								</form>
+							{% else %}
+								<form action="{{path('saveImg', {'id':elem.id})}}" method="POST">
+									<button>
+										<i class="far fa-bookmark"></i>
+									</button>
+								</form>
+							{% endif %}
+						</div>
+						<div class="likes">
+							<span>
+								{{elem.likes|length}}
+							</span>
+							{% set liked = false %}
+							{% for like in elem.likes %}
+								{% if app.session.get('user').Login == like.Login %}
+									{% set liked = true %}
+								{% endif %}
+							{% endfor %}
+
+							<form action="{{path('likeImg', {'id':elem.id})}}" method="POST">
+								<button>
+									<i class="fas fa-heart"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		{% endfor %}
+	</main>
+{% endblock %}

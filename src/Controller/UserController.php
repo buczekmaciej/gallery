@@ -20,13 +20,15 @@ class UserController extends AbstractController
     private $ls;
     private $session;
     private $hg;
+    private $em;
 
-    public function __construct(LoginStatus $ls, SessionInterface $session, Hash $hg, UserRepository $uR)
+    public function __construct(EntityManagerInterface $em, LoginStatus $ls, SessionInterface $session, Hash $hg, UserRepository $uR)
     {
         $this->uR = $uR;
         $this->session = $session;
         $this->ls = $ls->checkLoginStatus($session);
         $this->hg = $hg->generator($uR);
+        $this->em = $em;
     }
 
     /**
@@ -69,7 +71,7 @@ class UserController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, EntityManagerInterface $em)
+    public function register(Request $request)
     {
         if($this->ls == true)
         {
@@ -93,8 +95,8 @@ class UserController extends AbstractController
                 $user->setColorSchema('light');
 
                 // Push User object to database
-                $em->persist($user);
-                $em->flush();
+                $this->em->persist($user);
+                $this->em->flush();
 
                 return $this->redirectToRoute('login', []);
             }
@@ -121,5 +123,55 @@ class UserController extends AbstractController
         $this->session->remove('user');
 
         return $this->redirectToRoute('homepage', []);
+    }
+
+    /**
+     * @Route("/user/{id}/collection", name="myCollection", methods={"GET"})
+     */
+    public function myCollection(int $id)
+    {
+        if(!$this->ls)
+        {
+            return $this->redirectToRoute('homepage', []);
+        }
+        if($id !== $this->session->get('user')->getId())
+        {
+            return $this->redirectToRoute('myCollection', ['id'=>$this->session->get('user')->getId()]);
+        }
+
+        $saves = $this->uR->findBy(['id'=>$id])[0]->getCollection();
+        foreach($saves as &$save)
+        {
+            $save->setImage(stream_get_contents($save->getImage()));
+        }
+
+        return $this->render('user/collection.html.twig', [
+            'saves'=>$saves
+        ]);
+    }
+
+    /**
+     * @Route("/user/{id}/likes", name="myLikes", methods={"GET"})
+     */
+    public function myLikes(int $id)
+    {
+        if(!$this->ls)
+        {
+            return $this->redirectToRoute('homepage', []);
+        }
+        if($id !== $this->session->get('user')->getId())
+        {
+            return $this->redirectToRoute('myCollection', ['id'=>$this->session->get('user')->getId()]);
+        }
+
+        $likes = $this->uR->findBy(['id'=>$id])[0]->getLikes();
+        foreach($likes as &$like)
+        {
+            $like->setImage(stream_get_contents($like->getImage()));
+        }
+
+        return $this->render('user/likes.html.twig', [
+            'likes'=>$likes
+        ]);
     }
 }

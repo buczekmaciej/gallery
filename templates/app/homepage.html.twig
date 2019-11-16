@@ -19,7 +19,59 @@
 
 {% block navbar %}
 	<div class="navbar">
-		<i class="fas fa-ellipsis-h"></i>
+		<div class="menu">
+			<i class="fas fa-ellipsis-h"></i>
+			<div class="drop-menu">
+				{% if app.session.get('user') %}
+					<a href="{{path('myCollection', {'id':app.session.get('user').id})}}">
+						<button>
+							<i class="fas fa-bookmark"></i>
+							<span>
+								Collection
+							</span>
+						</button>
+					</a>
+					<a href="{{path('myLikes', {'id':app.session.get('user').id})}}">
+						<button>
+							<i class="fas fa-heart"></i>
+							<span>
+								Likes
+							</span>
+						</button>
+					</a>
+					<a href="{{path('logout')}}">
+						<button>
+							Logout
+						</button>
+					</a>
+					<div class="color-schema">
+						{% if app.session.get('user').colorSchema == 'light' %}
+							<i class="fas fa-sun"></i>
+							<form action="{{path('schemaUpdate')}}" method="POST">
+								<button>
+									<i class="fas fa-toggle-off"></i>
+								</button>
+							</form>
+							<i class="fas fa-moon"></i>
+						{% else %}
+							<i class="fas fa-sun"></i>
+							<form action="{{path('schemaUpdate')}}" method="POST">
+								<button>
+									<i class="fas fa-toggle-on"></i>
+								</button>
+							</form>
+							<i class="fas fa-moon"></i>
+						{% endif %}
+					</div>
+				{% else %}
+					<a href="{{path('login')}}">
+						<button>
+							Login
+						</button>
+					</a>
+				{% endif %}
+			</div>
+		</div>
 		<a href="{{path('homepage')}}">
 			Gallery
 		</a>
@@ -31,13 +83,24 @@
 		{% if pagination is empty %}
 			{% include "error.html.twig" %}
 		{% else %}
-			{% for elem in pagination %}
-				<div class="homepage-img">
-					<a href="{{path('imgDisp', {'id':elem.id})}}">
-						<img src="{{asset('gallery/' ~ elem.Image)}}" alt="Homepage img N° {{elem.id}}">
-					</a>
+			<div class="images">
+				{% for elem in pagination %}
+					<div class="homepage-img">
+						<a href="{{path('imgDisp', {'id':elem.id})}}">
+							<img src="{{asset('gallery/' ~ elem.Image)}}" alt="Homepage img N° {{elem.id}}">
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="paginator">
+				<div class="positioner">
+					Page:
+					{{pagination.currentPageNumber}}
+					of
+					{{pagination.pageCount}}
 				</div>
-			{% endfor %}
+				{{knp_pagination_render(pagination)}}
+			</div>
 		{% endif %}
 	</main>
 {% endblock %}

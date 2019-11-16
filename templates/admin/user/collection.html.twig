@@ -25,7 +25,7 @@
 {% block content %}
 	<div class="users-collection">
 		{% if user.collection is not empty %}
-			{% for image in user.collection %}
+			{% for image in user.collection|reverse %}
 				<img src="{{asset('gallery/' ~ image.Image)}}" alt="Collection image number {{loop.index}}" class="coll-img img-display" id="{{image.id}}">
 			{% endfor %}
 		{% else %}

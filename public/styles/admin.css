@@ -380,3 +380,14 @@ td img {
   width: 5%;
   text-align: center;
 }
+
+.img-display {
+  max-width: 50%;
+}
+.imgs-manage img {
+  max-width: 50%;
+}
+.users-collection {
+  overflow-y: auto;
+  max-height:90%;
+}

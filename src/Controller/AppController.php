@@ -117,6 +117,24 @@ class AppController extends AbstractController
         return $this->redirectToRoute('imgDisp', ['id'=>$id]);
     }
     
+    /**
+     * @Route("/update-schema", name="schemaUpdate", methods={"POST"})
+     */
+    public function updateSchema()
+    {
+        $user = $this->uR->findBy(['id'=>$this->session->get('user')->getId()])[0];
+        if ($user->getColorSchema() === 'light') {
+            $user->setColorSchema('dark');
+        } else {
+            $user->setColorSchema('light');
+        }
+        $this->em->flush();
+        $this->session->remove('user');
+        $this->session->set('user', $user);
+
+        return $this->redirectToRoute('homepage', []);
+    }
+
     private function viewMod($id)
     {
         $img = $this->gR->findBy(['id'=>$id])[0];

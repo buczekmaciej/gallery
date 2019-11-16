@@ -9,6 +9,9 @@ body {
 a {
   text-decoration: none;
 }
+button {
+  cursor: pointer;
+}
 
 .error {
   width: 75%;
