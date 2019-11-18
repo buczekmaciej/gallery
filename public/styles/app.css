@@ -208,7 +208,8 @@
   color: blue;
 }
 
-.user-image-collection {
+.user-image-collection,
+.search-results {
   display: flex;
   flex-wrap: wrap;
   width: 95%;
@@ -268,4 +269,11 @@
 .user-img-data .img-stats div span {
   font-size: 1vw;
   margin-right: 0.5em;
+}
+
+.img-date-cat {
+  display: flex;
+  min-width: 35%;
+  justify-content: space-between;
+  align-items: center;
 }

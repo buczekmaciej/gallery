@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use App\Services\LoginStatus;
 use App\Form\SearchType;
 use App\Repository\GalleryRepository;
@@ -22,8 +22,9 @@ class AppController extends AbstractController
     private $uR;
     private $em;
 
-    public function __construct(EntityManagerInterface $em, LoginStatus $ls, SessionInterface $session, UserRepository $uR, GalleryRepository $gR, PaginatorInterface $pag)
+    public function __construct(RequestStack $requestStack, EntityManagerInterface $em, SearchType $search, LoginStatus $ls, SessionInterface $session, UserRepository $uR, GalleryRepository $gR, PaginatorInterface $pag)
     {
+        $this->request = $requestStack->getCurrentRequest();
         $this->pag = $pag;
         $this->gR = $gR;
         $this->uR = $uR;
@@ -33,10 +34,20 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/", name="homepage", methods={"GET"})
+     * @Route("/", name="homepage", methods={"GET", "POST"})
      */
-    public function index(Request $request)
+    public function index()
     {
+        $search = $this->createForm(SearchType::class);
+        $search->handleRequest($this->request);
+
+        if($search->isSubmitted() && $search->isValid())
+        {
+            $q = $search->getData()['SearchBar'];
+
+            return $this->redirectToRoute('searched', ['q'=>$q]);
+        }
+
         $images = $this->gR->findBy(array(), array('addedAt'=>'DESC'), 500);
         foreach($images as &$img)
         {
@@ -45,16 +56,36 @@ class AppController extends AbstractController
 
         return $this->render('app/homepage.html.twig', [
             'pagination'=>$this->pag->paginate(
-                $images, $request->query->getInt('page', 1), 35)
+                $images, $this->request->query->getInt('page', 1), 35),
+            'search'=>$search->createView()
         ]);
     }
 
     /**
-     * @Route("/search", name="searched", methods={"GET"})
+     * @Route("/search", name="searched", methods={"GET", "POST"})
      */
     public function searched()
     {
-        return $this->render('app/searched.html.twig', []);
+        $search = $this->createForm(SearchType::class);
+        $search->handleRequest($this->request);
+
+        if($search->isSubmitted() && $search->isValid())
+        {
+            $q = $search->getData()['SearchBar'];
+
+            return $this->redirectToRoute('searched', ['q'=>$q]);
+        }
+
+        $results = $this->gR->findImages($this->request->query->get('q'));
+        foreach($results as &$result)
+        {
+            $result->setImage(stream_get_contents($result->getImage()));
+        }
+        
+        return $this->render('app/searched.html.twig', [
+            'search'=>$search->createView(),
+            'results'=>$results
+        ]);
     }
 
     /**
@@ -62,6 +93,16 @@ class AppController extends AbstractController
      */
     public function imgDisp($id)
     {
+        $search = $this->createForm(SearchType::class);
+        $search->handleRequest($this->request);
+
+        if($search->isSubmitted() && $search->isValid())
+        {
+            $q = $search->getData()['SearchBar'];
+
+            return $this->redirectToRoute('searched', ['q'=>$q]);
+        }
+
         $img = $this->gR->findBy(['id'=>$id]);
         if ($img) {
             $img = $img[0];
@@ -73,7 +114,8 @@ class AppController extends AbstractController
         }
 
         return $this->render('app/imgDisp.html.twig', [
-            'img'=>$img
+            'img'=>$img,
+            'search'=>$search->createView()
         ]);
     }
 

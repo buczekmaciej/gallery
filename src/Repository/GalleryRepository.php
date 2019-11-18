@@ -22,9 +22,9 @@ class GalleryRepository extends ServiceEntityRepository
     public function findImages($query)
     {
         return $this->createQueryBuilder('g')
-        ->andWhere('Title LIKE :q OR c.Name LIKE :q')
+        ->andWhere('g.title LIKE :q OR c.Name LIKE :q')
         ->leftJoin('g.category','c')
-        ->setParameter('q', $query)
+        ->setParameter('q', '%'.$query.'%')
         ->getQuery()
         ->getResult();
     }
