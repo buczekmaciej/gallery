@@ -3,7 +3,7 @@ body {
 }
 
 form {
-  height: 80vh;
+  height: 75vh;
   width: 35%;
   margin: 10vh auto;
   display: flex;
@@ -13,8 +13,8 @@ form {
   border-radius: 16px;
 }
 .with-error {
-  height: 90vh;
-  margin: 5vh auto;
+  height: 85vh;
+  margin: 7.5vh auto;
 }
 
 .inpBox {
@@ -76,18 +76,6 @@ form {
   outline: none;
   border: 2px solid #1a73e8;
 }
-.additionalContent {
-  display: flex;
-  justify-content: space-between;
-}
-.additionalContent label,
-.additionalContent label input {
-  cursor: pointer;
-}
-.additionalContent a {
-  font-size: 1rem;
-  color: #1a73e8;
-}
 
 button {
   border: none;
@@ -99,7 +87,7 @@ button {
   border-radius: 0.312rem;
   font-size: 1.2rem;
   width: 64%;
-  margin: 2.5rem auto;
+  margin: 1rem auto;
 }
 button:hover {
   background-color: #287ae6;
@@ -115,13 +103,13 @@ form > label {
 
 form > a {
   margin: 0.5rem auto;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: #1a73e8;
 }
 
 .back {
-  margin: 1.5rem 0;
-  width: 25%;
+  margin: 0.75rem 0;
+  width: 50%;
 }
 
 .alert-danger {

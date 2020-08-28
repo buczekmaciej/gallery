@@ -47,7 +47,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=5, nullable=true)
      */
-    private $colorSchema;
+    private $colorSchema = 'light';
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

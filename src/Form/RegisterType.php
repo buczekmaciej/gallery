@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RegisterType extends AbstractType
@@ -16,23 +15,23 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Login', TextType::class, ['attr'=>['placeholder'=>'Username...', 'class'=>'register-login-input']])
-            ->add('Password', RepeatedType::class, [
-                'type'=>PasswordType::class,
-                'options'=>['attr'=>['class'=>'register-password-input']],
-                'first_options'=>['attr'=>['placeholder'=>'Password...']],
-                'second_options'=>['attr'=>['placeholder'=>'Repeat password...']]
+            ->add('Username', TextType::class, [
+                'label' => 'Username'
             ])
-            ->add('Email', TextType::class, ['attr'=>['placeholder'=>'E-mail...', 'class'=>'register-mail-input']])
-            ->add('Submit', SubmitType::class, ['label'=>'Register', 'attr'=>['class'=>'register-submit']])
-        ;
+            ->add('Password', PasswordType::class, [
+                'label' => 'Password'
+            ])
+            ->add('Email', TextType::class, [
+                'label' => 'Email'
+            ])
+            ->add('Submit', SubmitType::class, [
+                'label' => 'Board in'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver->setDefaults([]);
     }
 
     public function getPrefix()

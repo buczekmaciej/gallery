@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Register
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/user/register.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+	{% if error %}
+		{{form_start(register, {'attr': {'class': 'with-error'}})}}
+	{% else %}
+		{{form_start(register)}}
+	{% endif %}
+	<a href="{{path('homepage')}}" class="back">
+		Go to homepage
+	</a>
+	<div class="inpBox">
+		<input type="text" id="{{register.children.Username.vars.id}}" value="" name="{{register.children.Username.vars.full_name}}" required autofocus>
+		{{form_label(register.Username)}}
+	</div>
+	<div class="inpBox">
+		<input type="password" id="{{register.children.Password.vars.id}}" value="" name="{{register.children.Password.vars.full_name}}" required>
+		{{form_label(register.Password)}}
+		<span class="showBtn">
+			Show
+		</span>
+	</div>
+	<div class="inpBox">
+		<input type="text" id="{{register.children.Email.vars.id}}" value="" name="{{register.children.Email.vars.full_name}}" required>
+		{{form_label(register.Email)}}
+	</div>
+	{{form_widget(register.Submit)}}
+	<a href="{{path('login')}}">
+		Already a member?
+	</a>
+	{% if error %}
+		<div class="alert-danger">
+			{{error|raw}}
+		</div>
+	{% endif %}
+	{{form_row(register._token)}}
+	{{form_end(register, {'render_rest': false})}}
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/form.js"></script>
+{% endblock %}

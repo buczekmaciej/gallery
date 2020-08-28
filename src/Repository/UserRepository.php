@@ -19,6 +19,17 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function checkRegister(string $username, string $email)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.Username = :username OR u.Email = :email')
+            ->setParameter(':username', $username)
+            ->setParameter(':email', $email)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

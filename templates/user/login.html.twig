@@ -10,18 +10,18 @@
 {% endblock %}
 
 {% block body %}
-	<form action="{{ path('login') }}" method="POST">
-		<p class="tag">
-			Sign in
-		</p>
+	<form action="{{ path('login') }}" {% if error %} class="with-error" {% endif %} method="POST">
+		<a href="{{path('homepage')}}" class="back">
+			Get back
+		</a>
 		<div class="inpBox">
-			<input type="text" id="username" name="username" value="{{ username }}" autofocus/>
+			<input type="text" id="username" name="username" value="{{ username }}" autofocus required/>
 			<label for="username">
 				Username
 			</label>
 		</div>
 		<div class="inpBox">
-			<input type="password" id="password" class="pass" name="password" value=""/>
+			<input type="password" id="password" class="pass" name="password" value="" required/>
 			<label for="password">
 				Password
 			</label>
@@ -29,22 +29,28 @@
 				Show
 			</span>
 		</div>
-		<label>
-			<input type="checkbox" name="_remember_me">
-			Remember me
-		</label>
-		<a href="">
-			Forgot password?
-		</a>
+		<div class="additionalContent">
+			<label>
+				<input type="checkbox" name="_remember_me">
+				Remember me
+			</label>
+			<a href="">
+				Forgot password?
+			</a>
+		</div>
 		<input type="hidden" name="csrf" value="{{ csrf_token('authenticate') }}">
 		<button id="submit-login" type="submit">
 			Sign in
 		</button>
-		<a href="">
+		<a href="{{path('register')}}">
 			Become member now
 		</a>
 		{% if error %}
 			<div class="alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 		{% endif %}
 	</form>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/form.js"></script>
 {% endblock %}
