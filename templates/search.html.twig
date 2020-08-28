@@ -1,8 +1,0 @@
-{% set subButton = search.children.SearchSubmit %}
-{{form_start(search)}}
-{{form_widget(search.SearchBar)}}
-<button type="submit" class="{{subButton.vars.attr.class}}" name="{{subButton.vars.full_name}}" id="{{subButton.vars.id}}">
-	<i class="fas fa-search"></i>
-</button>
-{% do search.SearchSubmit.setRendered() %}
-{{form_end(search)}}

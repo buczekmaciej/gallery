@@ -5,34 +5,46 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link href="{{asset('styles/user.css')}}" rel="stylesheet">
+	{{parent()}}
+	<link href="/styles/user/login.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-	{% include "alerts.html.twig" %}
-	<main class="login-container">
-		<a href="{{path('homepage')}}" class="homepage">
-			<i class="fas fa-home"></i>
-			Homepage
-		</a>
-		{{form_start(login)}}
-		{{form_widget(login.Login)}}
-		{{form_widget(login.Password)}}
-		{{form_widget(login.Submit)}}
-		{{form_end(login)}}
-		<p class="bottom-links">
-			<span>
-				You don't have account?
-				<a href="{{path('register')}}">
-					Join now!
-				</a>
-			</span>
-			<span>
-				Forgot password?
-				<a href="">
-					Reset it now!
-				</a>
-			</span>
+	<form action="{{ path('login') }}" method="POST">
+		<p class="tag">
+			Sign in
 		</p>
-	</main>
+		<div class="inpBox">
+			<input type="text" id="username" name="username" value="{{ username }}" autofocus/>
+			<label for="username">
+				Username
+			</label>
+		</div>
+		<div class="inpBox">
+			<input type="password" id="password" class="pass" name="password" value=""/>
+			<label for="password">
+				Password
+			</label>
+			<span class="showBtn">
+				Show
+			</span>
+		</div>
+		<label>
+			<input type="checkbox" name="_remember_me">
+			Remember me
+		</label>
+		<a href="">
+			Forgot password?
+		</a>
+		<input type="hidden" name="csrf" value="{{ csrf_token('authenticate') }}">
+		<button id="submit-login" type="submit">
+			Sign in
+		</button>
+		<a href="">
+			Become member now
+		</a>
+		{% if error %}
+			<div class="alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+	</form>
 {% endblock %}

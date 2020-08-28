@@ -1,20 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">
 		<title>
 			{% block title %}{% endblock %}
 		</title>
-		<link href="{{asset('styles/def.css')}}" rel="stylesheet">
-		<script src="https://kit.fontawesome.com/75e13d0c4b.js" crossorigin="anonymous"></script>
-		{% block stylesheets %}{% endblock %}
-		<link href="{{asset('styles/alerts.css')}}" rel="stylesheet">
+		{% block stylesheets %}
+			<link href="/styles/app.css" rel="stylesheet">
+		{% endblock %}
 	</head>
 	<body>
-		{% block navbar %}{% endblock %}
 		{% block body %}{% endblock %}
 		{% block javascripts %}{% endblock %}
-		<script src="{{asset('js/alerts.js')}}"></script>
-		<script src="{{asset('js/imgs.js')}}"></script>
 	</body>
 </html>

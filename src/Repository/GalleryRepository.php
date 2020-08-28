@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Gallery;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Gallery|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,11 +22,11 @@ class GalleryRepository extends ServiceEntityRepository
     public function findImages($query)
     {
         return $this->createQueryBuilder('g')
-        ->andWhere('g.title LIKE :q OR c.Name LIKE :q')
-        ->leftJoin('g.category','c')
-        ->setParameter('q', '%'.$query.'%')
-        ->getQuery()
-        ->getResult();
+            ->andWhere('g.title LIKE :q OR c.Name LIKE :q')
+            ->leftJoin('g.category', 'c')
+            ->setParameter('q', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
