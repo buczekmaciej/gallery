@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/login", name="login")
+     * @Route("/login", name="login", methods={"GET", "POST"})
      */
     public function login(AuthenticationUtils $au)
     {
@@ -28,7 +28,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/register", name="register")
+     * @Route("/register", name="register", methods={"GET", "POST"})
      */
     public function register($error = null, Request $request, UserRepository $ur, UserPasswordEncoderInterface $encoder, EntityManagerInterface $em)
     {
@@ -68,10 +68,23 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="logout")
+     * @Route("/logout", name="logout", methods={"GET"})
      */
     public function logout()
     {
+        return $this->redirectToRoute('homepage', []);
+    }
+
+    /**
+     * @Route("/color-schema-update", name="updateColorSchema", methods={"GET"})
+     */
+    public function updateColorSchema(UserRepository $ur, EntityManagerInterface $em)
+    {
+        $user = $ur->findOneBy(['id' => $this->getUser()->getId()]);
+        $user->setColorSchema($user->getColorSchema() == 'light' ? 'dark' : 'light');
+
+        $em->flush();
+
         return $this->redirectToRoute('homepage', []);
     }
 }

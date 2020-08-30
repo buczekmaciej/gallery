@@ -65,6 +65,11 @@ class User implements UserInterface
     private $views;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Gallery", mappedBy="uploader")
+     */
+    private $uploads;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -74,6 +79,7 @@ class User implements UserInterface
         $this->collection = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->views = new ArrayCollection();
+        $this->uploads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -234,6 +240,38 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Gallery[]
+     */
+    public function getUploads(): Collection
+    {
+        return $this->uploads;
+    }
+
+    public function addUpload(Gallery $gallery): self
+    {
+        if (!$this->gallery->contains($gallery)) {
+            $this->gallery[] = $gallery;
+            $gallery->setUploader($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUpload(Gallery $gallery): self
+    {
+        if ($this->gallery->contains($gallery)) {
+            $this->gallery->removeElement($gallery);
+            // set the owning side to null (unless already changed)
+            if ($gallery->getUploader() === $this) {
+                $gallery->setUploader(null);
+            }
+        }
+
+        return $this;
+    }
+
 
     public function getRoles(): array
     {

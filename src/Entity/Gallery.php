@@ -19,7 +19,8 @@ class Gallery
     private $id;
 
     /**
-     * @ORM\Column(type="blob")
+     * @ORM\Column(type="string", length=255)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $Image;
 
@@ -30,9 +31,10 @@ class Gallery
     private $category;
 
     /**
-     * @ORM\Column(type="string", length=300, nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="uploads")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $title;
+    private $uploader;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -93,14 +95,14 @@ class Gallery
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getUploader(): ?User
     {
-        return $this->title;
+        return $this->uploader;
     }
 
-    public function setTitle(?string $title): self
+    public function setUploader(?User $uploader): self
     {
-        $this->title = $title;
+        $this->uploader = $uploader;
 
         return $this;
     }

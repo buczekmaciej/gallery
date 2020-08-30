@@ -5,8 +5,55 @@
 	{% block addition %}{% endblock %}
 {% endblock %}
 
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/app/general/index.css" rel="stylesheet">
+	{% if app.user %}
+		{% if app.user.colorSchema == 'light' %}
+			<link href="/styles/app/themes/light.css" rel="stylesheet">
+		{% else %}
+			<link href="/styles/app/themes/dark.css" rel="stylesheet">
+		{% endif %}
+	{% else %}
+		<link href="/styles/app/themes/light.css" rel="stylesheet">
+	{% endif %}
+{% endblock %}
+
 {% block body %}
-	<nav></nav>
+	<nav class="app-navbar">
+		<a href="">
+			Explore
+		</a>
+		{% if app.user %}
+			<a href="">
+				Profile
+			</a>
+			{% if "ROLE_MODERATOR" in app.user.roles %}
+				<a href="">
+					Dashboard
+				</a>
+			{% endif %}
+			<a href="{{path('logout')}}">
+				Logout
+			</a>
+			{% if app.user.colorSchema == 'light' %}
+				<a href="{{path('updateColorSchema')}}" class="color-schema">
+					<img src="/icons/light/night.svg">
+				</a>
+			{% else %}
+				<a href="{{path('updateColorSchema')}}" class="color-schema">
+					<img src="/icons/dark/day.svg">
+				</a>
+			{% endif %}
+		{% else %}
+			<a href="{{path('login')}}">
+				Login
+			</a>
+			<a href="{{path('register')}}">
+				Register
+			</a>
+		{% endif %}
+	</nav>
 
 	{% block content %}{% endblock %}
 {% endblock %}

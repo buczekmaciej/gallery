@@ -1,1 +1,112 @@
 {% extends "app/index.html.twig" %}
+
+{% block addition %}
+	Homepage
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/app/general/homepage.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="home-gallery-container">
+		{% for item in gallery %}
+			<article class="home-gallery-elem">
+				<img src="/gallery/{{item.Image}}" alt="Image no. {{item.id}}" class="uploaded-img">
+				<div class="item-data">
+					<p class="cat-date">
+						Uploaded into
+						<span>
+							{{item.category.Name}}
+						</span>
+						at
+						<span>
+							{{item.addedAt|date('D M d, Y')}}
+						</span>
+					</p>
+					<div class="views">
+						{% if app.user %}
+							{% if app.user.colorSchema == 'light' %}
+								<img src="/icons/light/eye.svg">
+							{% else %}
+								<img src="/icons/dark/eye.svg">
+							{% endif %}
+						{% else %}
+							<img src="/icons/light/eye.svg">
+						{% endif %}
+						{% set views = item.views|length %}
+						{% if views >= 0 and views < 1000 %}
+							{{views}}
+						{% endif %}
+						{% if views > 999 and views < 1000000 %}
+							{{(views / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if views > 1000000 and views < 1000000000 %}
+							{{(views / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if views > 1000000000 and views < 1000000000 %}
+							{{(likes / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
+					</div>
+					<div class="likes">
+						{% if app.user %}
+							{% if app.user.colorSchema == 'light' %}
+								<img src="/icons/light/liked.svg">
+							{% else %}
+								<img src="/icons/dark/liked.svg">
+							{% endif %}
+						{% else %}
+							<img src="/icons/light/liked.svg">
+						{% endif %}
+						{% set likes = item.likes|length %}
+						{% if likes >= 0 and likes < 1000 %}
+							{{likes}}
+						{% endif %}
+						{% if likes > 999 and likes < 1000000 %}
+							{{(likes / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if likes > 1000000 and likes < 1000000000 %}
+							{{(likes / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if likes > 1000000000 and likes < 1000000000 %}
+							{{(likes / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
+					</div>
+					<div class="saves">
+						{% if app.user %}
+							{% if app.user.colorSchema == 'light' %}
+								<img src="/icons/light/bookmarked.svg">
+							{% else %}
+								<img src="/icons/dark/bookmarked.svg">
+							{% endif %}
+						{% else %}
+							<img src="/icons/light/bookmarked.svg">
+						{% endif %}
+						{% set saves = item.saves|length %}
+						{% if saves >= 0 and saves < 1000 %}
+							{{saves}}
+						{% endif %}
+						{% if saves > 999 and saves < 1000000 %}
+							{{(saves / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if saves > 1000000 and saves < 1000000000 %}
+							{{(saves / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if saves > 1000000000 and saves < 1000000000 %}
+							{{(likes / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
+					</div>
+					<a href="/gallery/{{item.Image}}" class="download" download>
+						Download
+					</a>
+				</div>
+			</article>
+		{% else %}
+			<p class="no-results">
+				Wow! Seems like noting is here yet.
+			</p>
+		{% endfor %}
+		{{knp_pagination_render(gallery)}}
+	</main>
+{% endblock %}

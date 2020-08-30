@@ -1,0 +1,17 @@
+body {
+  background-color: #242424;
+  color: #fff;
+}
+a {
+  color: #bcd4f0;
+}
+
+.pagination {
+  background-color: #1a73e8;
+}
+.pagination span {
+  color: #fff;
+}
+.pagination a {
+  color: rgba(255, 255, 255, 0.452);
+}

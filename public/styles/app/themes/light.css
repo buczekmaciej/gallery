@@ -1,0 +1,23 @@
+body {
+  background-color: #fff;
+  color: #242424;
+}
+a {
+  color: #1a73e8;
+}
+.item-data {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+.cat-date span:last-of-type {
+  color: #858585;
+}
+
+.pagination {
+  background-color: #1a73e8;
+}
+.pagination span {
+  color: #fff;
+}
+.pagination a {
+  color: rgba(255, 255, 255, 0.452);
+}
