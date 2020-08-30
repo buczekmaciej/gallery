@@ -1,0 +1,116 @@
+{% extends "app/index.html.twig" %}
+
+{% block addition %}
+	Profile
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/user/profile.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="profile-container">
+		<p class="profile-top-tag">
+			Your profile
+		</p>
+		{{form_start(update)}}
+		<div class="form-row">
+			<p class="row-label">
+				Username
+			</p>
+			<p class="row-value">
+				{{app.user.Username}}
+			</p>
+		</div>
+		<div class="form-row">
+			<p class="row-label">
+				{{form_label(update.email)}}
+			</p>
+			<p class="row-value">
+				{{form_widget(update.email, {'value': user.Email})}}
+			</p>
+		</div>
+		<a href="">
+			Change password
+		</a>
+		{{form_widget(update.submit)}}
+		{% if error %}
+			<div class="alert-danger">
+				{{error|raw}}
+			</div>
+		{% endif %}
+		{{form_end(update)}}
+		<div class="user-data">
+			<div class="views">
+				{% if app.user.colorSchema == 'light' %}
+					<img src="/icons/light/eye.svg">
+				{% else %}
+					<img src="/icons/dark/eye.svg">
+				{% endif %}
+				{% set views = user.views|length %}
+				{% if views >= 0 and views < 1000 %}
+					{{views}}
+				{% endif %}
+				{% if views > 999 and views < 1000000 %}
+					{{(views / 1000)|round(1, 'floor')}}K
+				{% endif %}
+				{% if views > 1000000 and views < 1000000000 %}
+					{{(views / 1000000)|round(1, 'floor')}}M
+				{% endif %}
+				{% if views > 1000000000 and views < 1000000000 %}
+					{{(likes / 1000000000)|round(1, 'floor')}}B
+				{% endif %}
+				<a href="">
+					Show views
+				</a>
+			</div>
+			<div class="likes">
+				{% if app.user.colorSchema == 'light' %}
+					<img src="/icons/light/liked.svg">
+				{% else %}
+					<img src="/icons/dark/liked.svg">
+				{% endif %}
+				{% set likes = user.likes|length %}
+				{% if likes >= 0 and likes < 1000 %}
+					{{likes}}
+				{% endif %}
+				{% if likes > 999 and likes < 1000000 %}
+					{{(likes / 1000)|round(1, 'floor')}}K
+				{% endif %}
+				{% if likes > 1000000 and likes < 1000000000 %}
+					{{(likes / 1000000)|round(1, 'floor')}}M
+				{% endif %}
+				{% if likes > 1000000000 and likes < 1000000000 %}
+					{{(likes / 1000000000)|round(1, 'floor')}}B
+				{% endif %}
+				<a href="">
+					Show likes
+				</a>
+			</div>
+			<div class="uploads">
+				{% if app.user.colorSchema == 'light' %}
+					<img src="/icons/light/upload.svg">
+				{% else %}
+					<img src="/icons/dark/upload.svg">
+				{% endif %}
+				{% set uploads = user.uploads|length %}
+				{% if uploads >= 0 and uploads < 1000 %}
+					{{uploads}}
+				{% endif %}
+				{% if uploads > 999 and uploads < 1000000 %}
+					{{(uploads / 1000)|round(1, 'floor')}}K
+				{% endif %}
+				{% if uploads > 1000000 and uploads < 1000000000 %}
+					{{(uploads / 1000000)|round(1, 'floor')}}M
+				{% endif %}
+				{% if uploads > 1000000000 and uploads < 1000000000 %}
+					{{(uploads / 1000000000)|round(1, 'floor')}}B
+				{% endif %}
+				<a href="">
+					Show uploads
+				</a>
+			</div>
+		</div>
+	</main>
+{% endblock %}

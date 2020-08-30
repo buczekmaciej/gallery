@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ProfileType;
 use App\Form\RegisterType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @Route("/login", name="login", methods={"GET", "POST"})
      */
@@ -30,7 +36,7 @@ class UserController extends AbstractController
     /**
      * @Route("/register", name="register", methods={"GET", "POST"})
      */
-    public function register($error = null, Request $request, UserRepository $ur, UserPasswordEncoderInterface $encoder, EntityManagerInterface $em)
+    public function register($error = null, Request $request, UserRepository $ur, UserPasswordEncoderInterface $encoder)
     {
         $register = $this->createForm(RegisterType::class);
         $register->handleRequest($request);
@@ -38,7 +44,6 @@ class UserController extends AbstractController
         if ($register->isSubmitted() && $register->isValid()) {
             $data = $register->getData();
 
-            dump($data);
             if (filter_var($data['Email'], FILTER_VALIDATE_EMAIL)) {
                 if (!$ur->checkRegister($data['Username'], $data['Email'])) {
 
@@ -50,8 +55,8 @@ class UserController extends AbstractController
                         $new->setResetHash(\App\Services\Hash::generator($ur));
                         $new->setRoles(["ROLE_USER"]);
 
-                        $em->persist($new);
-                        $em->flush();
+                        $this->em->persist($new);
+                        $this->em->flush();
 
                         return $this->redirectToRoute('login', []);
                     } catch (\Doctrine\ORM\Query\QueryException $e) {
@@ -78,13 +83,40 @@ class UserController extends AbstractController
     /**
      * @Route("/color-schema-update", name="updateColorSchema", methods={"GET"})
      */
-    public function updateColorSchema(UserRepository $ur, EntityManagerInterface $em, Request $request)
+    public function updateColorSchema(UserRepository $ur, Request $request)
     {
         $user = $ur->findOneBy(['id' => $this->getUser()->getId()]);
         $user->setColorSchema($user->getColorSchema() == 'light' ? 'dark' : 'light');
 
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirect($request->query->get('ref'));
+    }
+
+    /**
+     * @Route("/profile", name="profile", methods={"GET", "POST"})
+     */
+    public function profile(Request $request, string $error = null, UserRepository $ur)
+    {
+        $update = $this->createForm(ProfileType::class);
+        $update->handleRequest($request);
+
+        if ($update->isSubmitted() && $update->isValid()) {
+            $data = $update->getData();
+
+            if (filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $user = $ur->findOneBy(['id' => $this->getUser()->getId()]);
+                $user->setEmail($data['email']);
+
+                $this->em->flush();
+            } else $error = "E-mail is invalid";
+        }
+
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $this->getUser(),
+            'update' => $update->createView(),
+            'error' => $error
+        ]);
     }
 }

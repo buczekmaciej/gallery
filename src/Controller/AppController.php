@@ -36,4 +36,12 @@ class AppController extends AbstractController
             ]);
         }
     }
+
+    /**
+     * @Route("/upload-new", name="upload", methods={"GET", "POST"})
+     */
+    public function upload()
+    {
+        return $this->render('app/upload.html.twig', []);
+    }
 }

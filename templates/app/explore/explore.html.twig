@@ -79,30 +79,6 @@
 							{{(likes / 1000000000)|round(1, 'floor')}}B
 						{% endif %}
 					</div>
-					<div class="saves">
-						{% if app.user %}
-							{% if app.user.colorSchema == 'light' %}
-								<img src="/icons/light/bookmarked.svg">
-							{% else %}
-								<img src="/icons/dark/bookmarked.svg">
-							{% endif %}
-						{% else %}
-							<img src="/icons/light/bookmarked.svg">
-						{% endif %}
-						{% set saves = item.saves|length %}
-						{% if saves >= 0 and saves < 1000 %}
-							{{saves}}
-						{% endif %}
-						{% if saves > 999 and saves < 1000000 %}
-							{{(saves / 1000)|round(1, 'floor')}}K
-						{% endif %}
-						{% if saves > 1000000 and saves < 1000000000 %}
-							{{(saves / 1000000)|round(1, 'floor')}}M
-						{% endif %}
-						{% if saves > 1000000000 and saves < 1000000000 %}
-							{{(likes / 1000000000)|round(1, 'floor')}}B
-						{% endif %}
-					</div>
 					<a href="/gallery/{{item.Image}}" class="download" download>
 						Download
 					</a>

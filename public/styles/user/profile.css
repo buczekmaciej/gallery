@@ -1,0 +1,83 @@
+.profile-container {
+  width: 50%;
+  margin: 2.75rem auto;
+}
+.profile-top-tag {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+.profile-container form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0;
+}
+.form-row {
+  width: 50%;
+  height: 5rem;
+  margin-bottom: 0.75rem;
+}
+.row-label {
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+}
+.form-row:first-of-type .row-value {
+  margin-top: 0.75rem;
+}
+.profile-container input {
+  border: none;
+  padding: 0.75rem 0;
+  outline: transparent;
+  background-color: transparent;
+}
+.profile-container button {
+  border-radius: 16px;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+
+.user-data {
+  padding: 2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+}
+.cat-date {
+  width: 100%;
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.cat-date span:first-of-type {
+  font-weight: 600;
+}
+.user-data div {
+  width: 32%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.user-data div img {
+  margin-right: 0.75rem;
+  height: 2.5rem;
+}
+.user-data div a {
+  padding: 0.75rem 1.85rem;
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+  border-radius: 16px;
+  border: none;
+}
+
+.alert-danger {
+  max-width: 90%;
+  background-color: rgba(211, 0, 0, 0.815);
+  border: 3px solid rgb(221, 0, 0);
+  color: #f9f6f2;
+  margin: 1.5vh auto;
+  padding: 1rem 2rem;
+}

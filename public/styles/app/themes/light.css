@@ -21,3 +21,17 @@ a {
 .pagination a {
   color: rgba(255, 255, 255, 0.452);
 }
+
+.profile-container button {
+  background-color: #1a73e8;
+  color: #fff;
+}
+
+.profile-container form {
+  border-bottom: 1px solid #858585;
+}
+
+.user-data div a {
+  background-color: #1a73e8;
+  color: #fff;
+}

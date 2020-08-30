@@ -3,19 +3,22 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class SearchType extends AbstractType
+class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('SearchBar', TextType::class, ['attr'=>['class'=>'search-input','placeholder'=>'Search query']])
-            ->add('SearchSubmit', SubmitType::class, ['label'=>'', 'attr'=>['class'=>'search-submit']])
-        ;
+            ->add('email', TextType::class, [
+                'label' => 'E-mail'
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Update'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -24,8 +27,9 @@ class SearchType extends AbstractType
             // Configure your form options here
         ]);
     }
-    public function getPrefix()
+
+    public function getBlockPrefix()
     {
-        return 'search';
+        return 'profileUpdate';
     }
 }
