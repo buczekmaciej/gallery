@@ -78,13 +78,13 @@ class UserController extends AbstractController
     /**
      * @Route("/color-schema-update", name="updateColorSchema", methods={"GET"})
      */
-    public function updateColorSchema(UserRepository $ur, EntityManagerInterface $em)
+    public function updateColorSchema(UserRepository $ur, EntityManagerInterface $em, Request $request)
     {
         $user = $ur->findOneBy(['id' => $this->getUser()->getId()]);
         $user->setColorSchema($user->getColorSchema() == 'light' ? 'dark' : 'light');
 
         $em->flush();
 
-        return $this->redirectToRoute('homepage', []);
+        return $this->redirect($request->query->get('ref'));
     }
 }

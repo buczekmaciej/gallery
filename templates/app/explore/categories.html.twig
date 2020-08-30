@@ -1,0 +1,38 @@
+{% extends "app/index.html.twig" %}
+
+{% block addition %}
+	Explore
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/app/general/explore/categories.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="explore-categories">
+		<a href="{{path('explore', {'attr': 'all'})}}" class="explore-all">
+			Show all images
+		</a>
+		{% for category in categories %}
+			<section class="expl-cat-container">
+				<p class="expl-category-name">
+					Category:
+					<a href="{{path('explore', {'attr': category.Name})}}">
+						{{category.Name}}
+					</a>
+				</p>
+				<div class="expl-category-tags">
+					<p>
+						Tags:
+					</p>
+					{% for tag in category.tags %}
+						<a href="{{path('explore', {'attr': tag.Name})}}" class="expl-category-tag">
+							{{tag.Name}}
+						</a>
+					{% endfor %}
+				</div>
+			</section>
+		{% endfor %}
+	</main>
+{% endblock %}

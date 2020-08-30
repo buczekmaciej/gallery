@@ -21,7 +21,10 @@
 
 {% block body %}
 	<nav class="app-navbar">
-		<a href="">
+		<a href="{{path('homepage')}}">
+			Home
+		</a>
+		<a href="{{path('explore')}}">
 			Explore
 		</a>
 		{% if app.user %}
@@ -33,15 +36,18 @@
 					Dashboard
 				</a>
 			{% endif %}
+			<a href="">
+				Upload
+			</a>
 			<a href="{{path('logout')}}">
 				Logout
 			</a>
 			{% if app.user.colorSchema == 'light' %}
-				<a href="{{path('updateColorSchema')}}" class="color-schema">
+				<a href="{{path('updateColorSchema', {'ref': app.request.pathInfo})}}" class="color-schema">
 					<img src="/icons/light/night.svg">
 				</a>
 			{% else %}
-				<a href="{{path('updateColorSchema')}}" class="color-schema">
+				<a href="{{path('updateColorSchema', {'ref': app.request.pathInfo})}}" class="color-schema">
 					<img src="/icons/dark/day.svg">
 				</a>
 			{% endif %}

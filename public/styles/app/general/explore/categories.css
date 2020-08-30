@@ -1,0 +1,29 @@
+.explore-categories {
+  width: 65%;
+  margin: 1.5rem auto;
+}
+.explore-all {
+  font-size: 1.25rem;
+}
+
+.expl-cat-container {
+  width: 100%;
+  margin: 1.5rem 0 2rem;
+}
+.expl-category-name {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.expl-category-tags {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.15rem;
+}
+.expl-category-tags p {
+  margin-right: 0.5rem;
+}
+.expl-category-tags a {
+  margin-right: 0.5rem;
+}
