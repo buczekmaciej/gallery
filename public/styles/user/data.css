@@ -1,15 +1,14 @@
-.home-gallery-container {
+.profile-data-subcont {
   width: 75%;
   margin: 2rem auto;
 }
-.home-gallery-elem {
+.profile-data-elem {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
 }
-.home-gallery-elem > img {
+.profile-data-elem > img {
   max-width: 100%;
-  cursor: pointer;
 }
 .item-data {
   padding: 1rem 1rem;
@@ -33,7 +32,7 @@
 .item-data div img {
   margin-right: 0.75rem;
 }
-.home-gallery-elem img:not(.uploaded-img) {
+.profile-data-elem img:not(.uploaded-img) {
   height: 2rem;
 }
 .download {

@@ -61,7 +61,7 @@
 				{% if views > 1000000000 and views < 1000000000 %}
 					{{(likes / 1000000000)|round(1, 'floor')}}B
 				{% endif %}
-				<a href="">
+				<a href="{{path('showData', {'section': 'views'})}}">
 					Show views
 				</a>
 			</div>
@@ -84,7 +84,7 @@
 				{% if likes > 1000000000 and likes < 1000000000 %}
 					{{(likes / 1000000000)|round(1, 'floor')}}B
 				{% endif %}
-				<a href="">
+				<a href="{{path('showData', {'section': 'likes'})}}">
 					Show likes
 				</a>
 			</div>
@@ -107,7 +107,7 @@
 				{% if uploads > 1000000000 and uploads < 1000000000 %}
 					{{(uploads / 1000000000)|round(1, 'floor')}}B
 				{% endif %}
-				<a href="">
+				<a href="{{path('showData', {'section': 'uploads'})}}">
 					Show uploads
 				</a>
 			</div>

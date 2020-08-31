@@ -28,11 +28,11 @@
 			Explore
 		</a>
 		{% if app.user %}
-			<a href="">
+			<a href="{{path('profile')}}">
 				Profile
 			</a>
 			{% if "ROLE_MODERATOR" in app.user.roles %}
-				<a href="">
+				<a href="{{path('dashboard')}}">
 					Dashboard
 				</a>
 			{% endif %}

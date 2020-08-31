@@ -6,6 +6,7 @@ use App\Form\ProfileType;
 use App\Form\RegisterType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -118,5 +119,27 @@ class UserController extends AbstractController
             'update' => $update->createView(),
             'error' => $error
         ]);
+    }
+
+    /**
+     * @Route("/profile/{section}", name="showData", methods={"GET"})
+     */
+    public function showData(string $section, PaginatorInterface $paginator, Request $request)
+    {
+        if ($section == "views") {
+            return $this->render('user/views.html.twig', [
+                'viewsPag' => $paginator->paginate($this->getUser()->getViews(), $request->query->getInt('page', 1), 15)
+            ]);
+        } else if ($section == "likes") {
+            return $this->render('user/likes.html.twig', [
+                'userLikes' => $paginator->paginate($this->getUser()->getLikes(), $request->query->getInt('page', 1), 15)
+            ]);
+        } else if ($section == "uploads") {
+            return $this->render('user/uploads.html.twig', [
+                'uploads' => $paginator->paginate($this->getUser()->getUploads(), $request->query->getInt('page', 1), 15)
+            ]);
+        } else {
+            throw new \Exception(sprintf("There is no %s section.", $section), 404);
+        }
     }
 }

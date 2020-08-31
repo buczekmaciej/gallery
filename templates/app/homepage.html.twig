@@ -12,7 +12,7 @@
 {% block content %}
 	<main class="home-gallery-container">
 		{% for item in gallery %}
-			<article class="home-gallery-elem">
+			<article class="home-gallery-elem" data-id={{item.id}}>
 				<img src="/gallery/{{item.Image}}" alt="Image no. {{item.id}}" class="uploaded-img">
 				<div class="item-data">
 					<p class="cat-date">
@@ -51,11 +51,21 @@
 					</div>
 					<div class="likes">
 						{% if app.user %}
-							{% if app.user.colorSchema == 'light' %}
-								<img src="/icons/light/liked.svg">
-							{% else %}
-								<img src="/icons/dark/liked.svg">
-							{% endif %}
+							<a href="{{path('like', {'id': item.id, 'ref': app.request.pathInfo})}}">
+								{% if app.user in item.likes %}
+									{% if app.user.colorSchema == 'light' %}
+										<img src="/icons/light/liked.svg">
+									{% else %}
+										<img src="/icons/dark/liked.svg">
+									{% endif %}
+								{% else %}
+									{% if app.user.colorSchema == 'light' %}
+										<img src="/icons/light/like.svg">
+									{% else %}
+										<img src="/icons/dark/like.svg">
+									{% endif %}
+								{% endif %}
+							</a>
 						{% else %}
 							<img src="/icons/light/liked.svg">
 						{% endif %}
@@ -85,4 +95,10 @@
 		{% endfor %}
 		{{knp_pagination_render(gallery)}}
 	</main>
+{% endblock %}
+
+{% block javascripts %}
+	{% if app.user %}
+		<script src="/js/view.js"></script>
+	{% endif %}
 {% endblock %}

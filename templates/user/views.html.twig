@@ -1,24 +1,18 @@
 {% extends "app/index.html.twig" %}
 
 {% block addition %}
-	Explore
+	Views
 {% endblock %}
 
 {% block stylesheets %}
 	{{parent()}}
-	<link href="/styles/app/general/explore/explore.css" rel="stylesheet">
+	<link href="/styles/user/data.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-	<main class="explore-expl">
-		<p class="results-for">
-			Showing results for
-			<b>
-				{{app.request.attributes.get('attr')}}
-			</b>
-		</p>
-		{% for item in results %}
-			<article class="explore-elem" data-id={{item.id}}>
+	<main class='profile-data-subcont'>
+		{% for item in viewsPag %}
+			<article class="profile-data-elem">
 				<img src="/gallery/{{item.Image}}" alt="Image no. {{item.id}}" class="uploaded-img">
 				<div class="item-data">
 					<p class="cat-date">
@@ -94,13 +88,11 @@
 					</a>
 				</div>
 			</article>
+		{% else %}
+			<p class="no-results">
+				Wow! Seems like noting is here yet.
+			</p>
 		{% endfor %}
-		{{knp_pagination_render(results)}}
+		{{knp_pagination_render(viewsPag)}}
 	</main>
-{% endblock %}
-
-{% block javascripts %}
-	{% if app.user %}
-		<script src="/js/view.js"></script>
-	{% endif %}
 {% endblock %}

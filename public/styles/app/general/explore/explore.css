@@ -13,6 +13,7 @@
 }
 .explore-elem > img {
   max-width: 100%;
+  cursor: pointer;
 }
 .item-data {
   padding: 1rem 1rem;

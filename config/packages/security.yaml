@@ -33,6 +33,7 @@ security:
   access_control:
     - { path: ^/logout, roles: ROLE_USER }
     - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/check-view/*, roles: ROLE_USER }
     - { path: ^/upload-new, roles: ROLE_USER }
     - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     # - { path: ^/profile, roles: ROLE_USER }
