@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\ProfileType;
 use App\Form\RegisterType;
+use App\Form\ResetType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -141,5 +142,59 @@ class UserController extends AbstractController
         } else {
             throw new \Exception(sprintf("There is no %s section.", $section), 404);
         }
+    }
+
+    /**
+     * @Route("/change-password", name="changePass", methods={"GET"})
+     */
+    public function changePass(\Swift_Mailer $mailer)
+    {
+        $message = (new \Swift_Message('Password reset'))
+            ->setFrom('loslighty@gmail.com')
+            ->setTo($this->getUser()->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'mail.html.twig',
+                    ['hash' => $this->getUser()->getResetHash()]
+                ),
+                'text/html'
+            );
+
+        if ($mailer->send($message)) {
+            $this->addFlash('success', 'Reset link has been sent on your e-mail');
+        } else {
+            $this->addFlash('danger', 'Something went wrong while sending mail. Try again.');
+        }
+
+        return $this->redirectToRoute('profile', []);
+    }
+
+    /**
+     * @Route("/new-password", name="newPass", methods={"GET", "POST"})
+     */
+    public function newPass(Request $request, UserRepository $ur, UserPasswordEncoderInterface $encoder, string $error = null)
+    {
+        $form = $this->createForm(ResetType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData()['password'];
+
+            if ($data) {
+                $user = $ur->findOneBy(['id' => $this->getUser()->getId()]);
+                $user->setPassword($encoder->encodePassword($user, $data));
+                $user->setResetHash(\App\Services\Hash::generator($ur));
+
+                $this->em->flush();
+                $this->addFlash('success', 'Password successfully changed');
+
+                return $this->redirectToRoute('profile', []);
+            }
+        } else if ($form->isSubmitted() && !$form->isValid()) $error = 'Password are not same';
+
+        return $this->render('user/newPass.html.twig', [
+            'form' => $form->createView(),
+            'error' => $error
+        ]);
     }
 }

@@ -23,3 +23,9 @@ a {
 .profile-container form {
   border-bottom: 1px solid #fff;
 }
+
+.form-row input:focus ~ label,
+.form-row input:valid ~ label,
+.form-row input:not([value=""]) ~ label {
+  background-color: #242424;
+}

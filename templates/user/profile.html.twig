@@ -7,6 +7,7 @@
 {% block stylesheets %}
 	{{parent()}}
 	<link href="/styles/user/profile.css" rel="stylesheet">
+	<link href="/styles/alerts.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -31,7 +32,7 @@
 				{{form_widget(update.email, {'value': user.Email})}}
 			</p>
 		</div>
-		<a href="">
+		<a href="{{path('changePass')}}">
 			Change password
 		</a>
 		{{form_widget(update.submit)}}
@@ -40,6 +41,7 @@
 				{{error|raw}}
 			</div>
 		{% endif %}
+		{% include "alerts.html.twig" %}
 		{{form_end(update)}}
 		<div class="user-data">
 			<div class="views">

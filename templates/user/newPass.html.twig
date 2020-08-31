@@ -1,0 +1,30 @@
+{% extends "app/index.html.twig" %}
+
+{% block addition %}
+	Change password
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/user/reset.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(form)}}
+	<div class="form-row">
+		<input type="password" id="{{form.children.password.children.first.vars.id}}" value="" name="{{form.children.password.children.first.vars.full_name}}" required autofocus>
+		{{form_label(form.password.first)}}
+	</div>
+	<div class="form-row">
+		<input type="password" id="{{form.children.password.children.second.vars.id}}" value="" name="{{form.children.password.children.second.vars.full_name}}" required autofocus>
+		{{form_label(form.password.second)}}
+	</div>
+	{{form_widget(form._token)}}
+	{{form_widget(form.submit)}}
+	{% if error %}
+		<div class="alert-danger">
+			{{error|raw}}
+		</div>
+	{% endif %}
+	{{form_end(form, {'render_rest': false})}}
+{% endblock %}

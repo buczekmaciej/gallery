@@ -35,3 +35,9 @@ a {
   background-color: #1a73e8;
   color: #fff;
 }
+
+.form-row input:focus ~ label,
+.form-row input:valid ~ label,
+.form-row input:not([value=""]) ~ label {
+  background-color: #fff;
+}
