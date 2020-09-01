@@ -29,3 +29,15 @@ a {
 .form-row input:not([value=""]) ~ label {
   background-color: #242424;
 }
+
+.form-box:last-of-type label {
+  color: #fff;
+  background-color: #242424;
+}
+
+.form-box select {
+  color: #fff;
+}
+.form-box option {
+  background-color: #242424;
+}

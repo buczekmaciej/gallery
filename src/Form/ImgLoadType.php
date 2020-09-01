@@ -2,11 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Gallery;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -18,38 +16,37 @@ class ImgLoadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Image', FileType::class, [
-                'required'=>true,
-                'constraints'=>[
+            ->add('image', FileType::class, [
+                'required' => true,
+                'constraints' => [
                     new File([
-                        'maxSize'=>'1024k',
-                        'mimeTypes'=>[
+                        'maxSize' => '4096k',
+                        'mimeTypes' => [
                             'image/png',
                             'image/jpg',
+                            'image/svg',
                             'image/jpeg'
                         ]
                     ])
                 ]
             ])
-            ->add('title', TextType::class, ['attr'=>['placeholder'=>'Title...', 'class'=>'imgload-input']])
             ->add('category', EntityType::class, [
-                'class'=>Categories::class,
-                'choice_label'=>'Name',
-                'expanded'=>false,
-                'multiple'=>false
+                'class' => Categories::class,
+                'choice_label' => 'Name',
+                'required' => false,
+                'placeholder' => 'No category'
             ])
-            ->add('Submit', SubmitType::class, ['label'=>'Upload','attr'=>['imgLoad-btn']])
-        ;
+            ->add('submit', SubmitType::class, [
+                'label' => 'Upload'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Gallery::class,
-        ]);
+        $resolver->setDefaults([]);
     }
     public function getPrefix()
     {
-        return 'loadImage';
+        return 'uploadImage';
     }
 }

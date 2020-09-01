@@ -21,13 +21,30 @@ class GalleryRepository extends ServiceEntityRepository
 
     public function getMatchingResults(string $attr)
     {
+        if ($attr !== 'uncategorized') {
+            return $this->createQueryBuilder('g')
+                ->andWhere('c.Name = :attr OR t.Name = :attr')
+                ->leftJoin('g.category', 'c')
+                ->leftJoin('c.Tags', 't')
+                ->setParameter(":attr", $attr)
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('g')
+                ->andWhere('g.category IS NULL')
+                ->getQuery()
+                ->getResult();
+        }
+    }
+
+    public function getLastId()
+    {
         return $this->createQueryBuilder('g')
-            ->andWhere('c.Name = :attr OR t.Name = :attr')
-            ->leftJoin('g.category', 'c')
-            ->leftJoin('c.Tags', 't')
-            ->setParameter(":attr", $attr)
+            ->select('g.id')
+            ->setMaxResults(1)
+            ->orderBy('g.id', 'DESC')
             ->getQuery()
-            ->getResult();
+            ->getResult()[0]['id'];
     }
 
     // /**

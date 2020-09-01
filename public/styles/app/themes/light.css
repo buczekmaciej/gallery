@@ -41,3 +41,16 @@ a {
 .form-row input:not([value=""]) ~ label {
   background-color: #fff;
 }
+
+.form-box:last-of-type label {
+  color: #1a73e8;
+  background-color: #fff;
+}
+
+.form-box:first-of-type label {
+  color: #1a73e8;
+}
+
+.form-box select {
+  color: #1a73e8;
+}

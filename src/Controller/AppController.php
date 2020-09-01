@@ -2,20 +2,23 @@
 
 namespace App\Controller;
 
+use App\Form\ImgLoadType;
 use App\Repository\CategoriesRepository;
 use App\Repository\GalleryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
 {
-    public function __construct(GalleryRepository $gr)
+    public function __construct(GalleryRepository $gr, EntityManagerInterface $em)
     {
         $this->gr = $gr;
+        $this->em = $em;
     }
 
     /**
@@ -47,7 +50,7 @@ class AppController extends AbstractController
     /**
      * @Route("/check-view/{id}", methods={"POST"})
      */
-    public function checkView(int $id, EntityManagerInterface $em, bool $viewed = false)
+    public function checkView(int $id, bool $viewed = false)
     {
         $post = $this->gr->findOneBy(['id' => $id]);
         if ($post) {
@@ -59,7 +62,7 @@ class AppController extends AbstractController
             }
             if (!$viewed) {
                 $post->addView($this->getUser());
-                $em->flush();
+                $this->em->flush();
                 return new Response("Successfully added to viewed", 200);
             } else {
                 return new Response("Seen already", 202);
@@ -72,7 +75,7 @@ class AppController extends AbstractController
     /**
      * @Route("/like/{id}", name="like", methods={"GET"})
      */
-    public function like(int $id, EntityManagerInterface $em, bool $liked = false, Request $request)
+    public function like(int $id, bool $liked = false, Request $request)
     {
         $post = $this->gr->findOneBy(['id' => $id]);
         if ($post) {
@@ -84,7 +87,7 @@ class AppController extends AbstractController
             }
 
             !$liked ? $post->addLike($this->getUser()) : $post->removeLike($this->getUser());
-            $em->flush();
+            $this->em->flush();
             return $this->redirect($request->query->get('ref'));
         } else {
             throw new \Exception("No object found. Refresh page and try again", 404);
@@ -94,8 +97,40 @@ class AppController extends AbstractController
     /**
      * @Route("/upload-new", name="upload", methods={"GET", "POST"})
      */
-    public function upload()
+    public function upload(Request $request, string $error = null)
     {
-        return $this->render('app/upload.html.twig', []);
+        $upload = $this->createForm(ImgLoadType::class);
+        $upload->handleRequest($request);
+
+        if ($upload->isSubmitted() && $upload->isValid()) {
+            $data = $upload->getData();
+
+            try {
+                $new = new \App\Entity\Gallery;
+                $name = ($this->gr->getLastId() + 1) . "." . $data['image']->guessExtension();
+
+                $data['image']->move(
+                    'gallery/',
+                    $name
+                );
+
+                $new->setImage($name);
+                $new->setCategory($data['category']);
+                $new->setUploader($this->getUser());
+                $new->setAddedAt(new \DateTime());
+
+                $this->em->persist($new);
+                $this->em->flush();
+
+                return $this->redirectToRoute('homepage', []);
+            } catch (FileException $e) {
+                $error = "Something went wrong. Try again. Error message: {$e->getMessage()}";
+            }
+        }
+
+        return $this->render('app/upload.html.twig', [
+            'upload' => $upload->createView(),
+            'error' => $error
+        ]);
     }
 }

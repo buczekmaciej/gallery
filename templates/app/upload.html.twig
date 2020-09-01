@@ -9,4 +9,37 @@
 	<link href="/styles/app/general/upload.css" rel="stylesheet">
 {% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+	{{form_start(upload)}}
+	<div class="form-box">
+		<input type="file" id="{{upload.children.image.vars.id}}" name="{{upload.children.image.vars.full_name}}" class="hidden-field" required>
+		<label for="{{upload.children.image.vars.id}}">
+			<span class="upload-label">
+				Select image to upload
+			</span>
+			<span class="format">
+				Format .svg, .png, .jpg, .jpeg
+			</span>
+			<span class="file-name"></span>
+		</label>
+	</div>
+	<div class="form-box">
+		{{form_widget(upload.category)}}
+		{{form_label(upload.category)}}
+	</div>
+	{{form_widget(upload._token)}}
+	{{form_widget(upload.submit)}}
+	{% if error %}
+		<div class="alert-danger">
+			{{error|raw}}
+		</div>
+	{% endif %}
+	{{form_end(upload, {'render_rest': false})}}
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		let fileInp = document.getElementsByClassName('hidden-field')[0];
+fileInp.onchange = () => document.getElementsByClassName("file-name")[0].innerText = fileInp.files[0].name;
+	</script>
+{% endblock %}

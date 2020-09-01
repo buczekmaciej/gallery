@@ -18,7 +18,11 @@
 					<p class="cat-date">
 						Uploaded into
 						<span>
-							{{item.category.Name}}
+							{% if item.category %}
+								{{item.category.Name}}
+							{% else %}
+								uncategorized
+							{% endif %}
 						</span>
 						at
 						<span>

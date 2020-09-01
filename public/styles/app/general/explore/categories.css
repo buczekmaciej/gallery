@@ -1,9 +1,13 @@
 .explore-categories {
   width: 65%;
   margin: 1.5rem auto;
+  display: flex;
+  flex-direction: column;
 }
-.explore-all {
+.explore-all,
+.explore-uncategorized {
   font-size: 1.25rem;
+  margin: 0.25rem 0;
 }
 
 .expl-cat-container {

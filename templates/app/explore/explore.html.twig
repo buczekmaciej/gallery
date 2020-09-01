@@ -10,11 +10,17 @@
 {% endblock %}
 
 {% block content %}
+	<div class="fullscreen-preview">
+		<img class="img-preview">
+		<span class="close">
+			Close
+		</span>
+	</div>
 	<main class="explore-expl">
 		<p class="results-for">
 			Showing results for
 			<b>
-				{{app.request.attributes.get('attr')}}
+				{{app.request.attributes.get('attr')|capitalize}}
 			</b>
 		</p>
 		{% for item in results %}
@@ -24,7 +30,11 @@
 					<p class="cat-date">
 						Uploaded into
 						<span>
-							{{item.category.Name}}
+							{% if item.category %}
+								{{item.category.Name}}
+							{% else %}
+								uncategorized
+							{% endif %}
 						</span>
 						at
 						<span>

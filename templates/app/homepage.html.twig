@@ -10,6 +10,12 @@
 {% endblock %}
 
 {% block content %}
+	<div class="fullscreen-preview">
+		<img class="img-preview">
+		<span class="close">
+			Close
+		</span>
+	</div>
 	<main class="home-gallery-container">
 		{% for item in gallery %}
 			<article class="home-gallery-elem" data-id={{item.id}}>
@@ -18,7 +24,11 @@
 					<p class="cat-date">
 						Uploaded into
 						<span>
-							{{item.category.Name}}
+							{% if item.category %}
+								{{item.category.Name}}
+							{% else %}
+								uncategorized
+							{% endif %}
 						</span>
 						at
 						<span>

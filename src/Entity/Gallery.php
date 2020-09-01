@@ -26,7 +26,7 @@ class Gallery
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Categories", inversedBy="galleries")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $category;
 
@@ -48,12 +48,6 @@ class Gallery
     private $likes;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="collection")
-     * @ORM\JoinTable(name="user_gallery_saves")
-     */
-    private $saves;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="views")
      * @ORM\JoinTable(name="user_gallery_views")
      */
@@ -62,7 +56,6 @@ class Gallery
     public function __construct()
     {
         $this->likes = new ArrayCollection();
-        $this->saves = new ArrayCollection();
         $this->views = new ArrayCollection();
     }
 
@@ -140,32 +133,6 @@ class Gallery
     {
         if ($this->likes->contains($like)) {
             $this->likes->removeElement($like);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getSaves(): Collection
-    {
-        return $this->saves;
-    }
-
-    public function addSave(User $save): self
-    {
-        if (!$this->saves->contains($save)) {
-            $this->saves[] = $save;
-        }
-
-        return $this;
-    }
-
-    public function removeSave(User $save): self
-    {
-        if ($this->saves->contains($save)) {
-            $this->saves->removeElement($save);
         }
 
         return $this;
