@@ -1,0 +1,31 @@
+.dashb-container {
+  width: 87.5%;
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.dashb-container section {
+  width: 30%;
+  margin: 1rem 10%;
+  background-color: rgb(24, 41, 58);
+  border-radius: 16px;
+  padding: 2rem;
+}
+.top {
+  font-size: 1.75rem;
+}
+.amount {
+  margin: 0.75rem 0 1.75rem;
+  font-size: 1.25rem;
+}
+.manage-btn {
+  color: #fff;
+  background-color: rgb(39, 57, 75);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

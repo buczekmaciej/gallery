@@ -30,6 +30,14 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getNoUsers()
+    {
+        return (int)$this->createQueryBuilder('u')
+            ->select('COUNT(u) as amount')
+            ->getQuery()
+            ->getResult()[0]['amount'];
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

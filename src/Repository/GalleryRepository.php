@@ -47,6 +47,14 @@ class GalleryRepository extends ServiceEntityRepository
             ->getResult()[0]['id'];
     }
 
+    public function getNoUploads()
+    {
+        return (int)$this->createQueryBuilder('g')
+            ->select('COUNT(g) as amount')
+            ->getQuery()
+            ->getResult()[0]['amount'];
+    }
+
     // /**
     //  * @return Gallery[] Returns an array of Gallery objects
     //  */

@@ -19,6 +19,14 @@ class CategoriesRepository extends ServiceEntityRepository
         parent::__construct($registry, Categories::class);
     }
 
+    public function getNoCategories()
+    {
+        return (int)$this->createQueryBuilder('c')
+            ->select('COUNT(c) as amount')
+            ->getQuery()
+            ->getResult()[0]['amount'];
+    }
+
     // /**
     //  * @return Categories[] Returns an array of Categories objects
     //  */

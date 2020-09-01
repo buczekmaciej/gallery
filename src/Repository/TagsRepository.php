@@ -19,6 +19,14 @@ class TagsRepository extends ServiceEntityRepository
         parent::__construct($registry, Tags::class);
     }
 
+    public function getNoTags()
+    {
+        return (int)$this->createQueryBuilder('t')
+            ->select('COUNT(t) as amount')
+            ->getQuery()
+            ->getResult()[0]['amount'];
+    }
+
     // /**
     //  * @return Tags[] Returns an array of Tags objects
     //  */

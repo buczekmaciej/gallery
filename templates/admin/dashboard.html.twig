@@ -1,129 +1,59 @@
-{% extends 'base.html.twig' %}
+{% extends "admin/index.html.twig" %}
 
-{% block title %}
-	Admin dashboard
+{% block addition %}
+	Dashboard
 {% endblock %}
 
 {% block stylesheets %}
-	<link href="{{asset('styles/admin.css')}}" rel="stylesheet">
+	{{parent()}}
+	<link href="/styles/admin/dashboard.css" rel="stylesheet">
 {% endblock %}
 
-{% block body %}
-	<main class="dashboard-container">
-		<section class="side">
-			<p class="username">
-				<span>
-					Username
-				</span>
-				<a href="">
-					Logout
-					<i class="fas fa-sign-out-alt"></i>
-				</a>
+{% block content %}
+	<main class="dashb-container">
+		<section class="users-section">
+			<p class="top">
+				No. users
 			</p>
-			<div class="nav">
-				<div class="users">
-					<p>
-						<i class="fas fa-users"></i>
-						<span>
-							Users
-						</span>
-						<i class="fas fa-angle-down"></i>
-					</p>
-					<div class="users-actions">
-						<a href="{{path('usersDash')}}">
-							<i class="fas fa-list-alt"></i>
-							<span>
-								Manage users
-							</span>
-						</a>
-					</div>
-				</div>
-				<div class="galleries">
-					<p>
-						<i class="fas fa-images"></i>
-						<span>
-							Images
-						</span>
-						<i class="fas fa-angle-down"></i>
-					</p>
-					<div class="galleries-actions">
-						<a href="{{path('imagesDash')}}">
-							<i class="fas fa-list-alt"></i>
-							<span>
-								Manage images
-							</span>
-						</a>
-						<a href="{{path('loadImage')}}">
-							<i class="fas fa-plus"></i>
-							<span>
-								Add images
-							</span>
-						</a>
-					</div>
-				</div>
-				<div class="categories">
-					<p>
-						<i class="fas fa-folder-open"></i>
-						<span>
-							Categories
-						</span>
-						<i class="fas fa-angle-down"></i>
-					</p>
-					<div class="categories-actions">
-						<a href="{{path('categoriesDash')}}">
-							<i class="fas fa-list-alt"></i>
-							<span>
-								Manage categories
-							</span>
-						</a>
-						<a href="{{path('newCategory')}}">
-							<i class="fas fa-plus"></i>
-							<span>
-								Add categories
-							</span>
-						</a>
-					</div>
-				</div>
-				<div class="tags">
-					<p>
-						<i class="fas fa-tags"></i>
-						<span>
-							Tags
-						</span>
-						<i class="fas fa-angle-down"></i>
-					</p>
-					<div class="tags-actions">
-						<a href="{{path('tagsDash')}}">
-							<i class="fas fa-list-alt"></i>
-							<span>
-								Manage tags
-							</span>
-						</a>
-						<a href="{{path('tagsAdd')}}">
-							<i class="fas fa-plus"></i>
-							<span>
-								Add tags
-							</span>
-						</a>
-					</div>
-				</div>
-			</div>
-			{% include "alerts.html.twig" %}
+			<p class="amount">
+				{{users}}
+			</p>
+			<a herf="" class="manage-btn">
+				Manage
+			</a>
 		</section>
-
-		<section class="content">
-			{% block topContent %}{% endblock %}
-			{% block content %}
-				<div class="main-org">
-					<p class="hello">
-						Welcome in Gallery App Dashboard
-					</p>
-				</div>
-			{% endblock %}
+		<section class="uploads-section">
+			<p class="top">
+				No. uploads
+			</p>
+			<p class="amount">
+				{{uploads}}
+			</p>
+			<a herf="" class="manage-btn">
+				Manage
+			</a>
+		</section>
+		<section class="categories-section">
+			<p class="top">
+				No. categories
+			</p>
+			<p class="amount">
+				{{categories}}
+			</p>
+			<a herf="" class="manage-btn">
+				Manage
+			</a>
+		</section>
+		<section class="tags-section">
+			<p class="top">
+				No. tags
+			</p>
+			<p class="amount">
+				{{tags}}
+			</p>
+			<a herf="" class="manage-btn">
+				Manage
+			</a>
 		</section>
 	</main>
-{% endblock %}
-
-{% block javascripts %}
-	<script src="{{asset('js/dashboard.js')}}"></script>
 {% endblock %}

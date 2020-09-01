@@ -1,0 +1,44 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Admin |
+	{% block addition %}{% endblock %}
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/index.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+	<nav class="admin-navbar">
+		<p class="user">
+			<span class="username">
+				{{app.user.Username}}
+			</span>
+			<span class="role">
+				{{app.user.roles|last|lower|split('_').1|capitalize}}
+			</span>
+		</p>
+		<a href="{{path('dashboard')}}" {% if app.request.get('_route') == 'dashboard' %} class="home-link active" {% else %} class="home-link" {% endif %}>
+			Home
+		</a>
+		<a href="" {% if app.request.get('_route') == '' %} class="users-link active" {% else %} class="users-link" {% endif %}>
+			Users
+		</a>
+		<a href="" {% if app.request.get('_route') == '' %} class="uploads-link active" {% else %} class="uploads-link" {% endif %}>
+			Uploads
+		</a>
+		<a href="" {% if app.request.get('_route') == '' %} class="categories-link active" {% else %} class="categories-link" {% endif %}>
+			Categories
+		</a>
+		<a href="" {% if app.request.get('_route') == '' %} class="tags-link active" {% else %} class="tags-link" {% endif %}>
+			Tags
+		</a>
+		<a href="{{path('logout')}}" class="logout-link">
+			Logout
+		</a>
+	</nav>
+
+	{% block content %}{% endblock %}
+{% endblock %}

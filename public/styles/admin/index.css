@@ -1,0 +1,41 @@
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(39, 57, 75);
+  color: #fff;
+  display: flex;
+  overflow: hidden;
+}
+
+.admin-navbar {
+  width: 12.5%;
+  height: 100%;
+  background-color: rgb(24, 41, 58);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1.5rem;
+}
+.user {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2.75rem;
+}
+.username {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+.role {
+  font-size: 1.15rem;
+}
+
+a {
+  font-size: 1.15rem;
+  margin: 0.75rem 0;
+  color: rgba(255, 255, 255, 0.534);
+}
+.active {
+  color: #fff !important;
+  font-weight: 600 !important;
+}
