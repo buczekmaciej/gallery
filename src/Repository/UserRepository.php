@@ -38,6 +38,27 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()[0]['amount'];
     }
 
+    public function getUsers()
+    {
+        $all = $this->createQueryBuilder('u')
+            ->getQuery()
+            ->getResult();
+
+        $admins = [];
+        $mods = [];
+        $users = [];
+
+        foreach ($all as $u) {
+            $temp = $u->getRoles();
+            if (in_array('ROLE_ADMIN', $temp)) $admins[] = $u;
+            else if (!in_array("ROLE_ADMIN", $temp) && in_array('ROLE_MODERATOR', $temp)) $mods[] = $u;
+            else if (!in_array("ROLE_MODERATOR", $temp)) $users[] = $u;
+        }
+        unset($temp);
+
+        return ['admins' => $admins, 'moderators' => $mods, 'users' => $users];
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

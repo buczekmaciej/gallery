@@ -21,21 +21,49 @@ body {
   display: flex;
   flex-direction: column;
   margin-bottom: 2.75rem;
+  cursor: default;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 .username {
   font-size: 2rem;
   margin-bottom: 0.25rem;
+  letter-spacing: 0.05rem;
+  font-weight: 600;
 }
 .role {
   font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.534);
 }
 
-a {
+.admin-navbar a {
   font-size: 1.15rem;
   margin: 0.75rem 0;
   color: rgba(255, 255, 255, 0.534);
 }
+
+.reports-link {
+  display: flex;
+  align-items: center;
+}
+.exsist-pending {
+  background-color: #fff;
+  border-radius: 100%;
+  border: none;
+  height: 0.4rem;
+  width: 0.4rem;
+  margin-left: 2rem;
+  display: block;
+}
+
+.logout-link,
 .active {
   color: #fff !important;
   font-weight: 600 !important;
+}
+
+main {
+  width: 87.5%;
+  height: 100vh;
+  overflow: auto;
 }

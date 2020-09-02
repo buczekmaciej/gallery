@@ -1,0 +1,66 @@
+.adm-user-container {
+  padding: 1.5rem 3rem;
+}
+
+.search-data {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.admin-search-inp {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.534);
+  color: #fff;
+  width: 90%;
+  font-size: 1.25rem;
+  padding: 0.5rem 0.25rem;
+  outline: transparent;
+}
+.admin-search-inp::placeholder {
+  color: rgba(255, 255, 255, 0.534);
+}
+
+.users-container {
+  margin-top: 1rem;
+}
+.section-label {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.user-elem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 4rem;
+}
+.a-user-username {
+  width: 25%;
+}
+.a-user-email {
+  width: 35%;
+}
+.a-user-disabled {
+  width: 10%;
+}
+.direct-reports {
+  width: 6%;
+  margin: 0 0.75rem;
+  color: #fff;
+  font-weight: 600;
+}
+.a-user-actions {
+  display: flex;
+  width: 15%;
+}
+.a-user-actions a {
+  height: 1.25rem;
+  width: 1.25rem;
+  margin: 0 0.35rem;
+}
+
+img {
+  height: 100%;
+}

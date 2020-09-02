@@ -74,12 +74,18 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity=Reports::class, mappedBy="user")
+     */
+    private $reports;
+
     public function __construct()
     {
         $this->collection = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->views = new ArrayCollection();
         $this->uploads = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -293,5 +299,36 @@ class User implements UserInterface
     }
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * @return Collection|Reports[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Reports $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Reports $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getUser() === $this) {
+                $report->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

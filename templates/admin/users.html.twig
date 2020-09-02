@@ -1,0 +1,69 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Users
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/users.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="adm-user-container">
+		<section class="search-data">
+			<input type="text" class="admin-search-inp" placeholder="Provide conditioning data...">
+		</section>
+
+		<section class="users-container">
+			{% for label, data in users %}
+				{% if data %}
+					<span class="section-label">
+						{{label|capitalize}}
+					</span>
+					{% for user in data %}
+						<article class="user-elem">
+							<p class="a-user-username search-field">
+								{{user.Username}}
+							</p>
+							<p class="a-user-email search-field">
+								{{user.Email}}
+							</p>
+							<p class="a-user-disabled">
+								{% if user.isDisabled %}
+									Disabled
+								{% else %}
+									Not disabled
+								{% endif %}
+							</p>
+							<a href="" class="direct-reports">
+								Reports
+							</a>
+							<div class="a-user-actions">
+								{% if "ROLE_ADMIN" in app.user.roles and 1 != user.id %}
+									{% if "ROLE_ADMIN" not in user.roles %}
+										<a href="{{path('aUPromote', {'id': user.id})}}" class="action-promote">
+											<img src="/icons/admin/up.svg" alt="Up icon" title="Promote user">
+										</a>
+									{% endif %}
+									{% if "ROLE_MODERATOR" in user.roles %}
+										<a href="{{path('aUDemote', {'id': user.id})}}" class="action-demote">
+											<img src="/icons/admin/down.svg" alt="Down icon" title="Demote account">
+										</a>
+									{% endif %}
+								{% endif %}
+								<a href="{{path('aUDisable', {'id': user.id})}}" class="action-disable">
+									<img src="/icons/admin/block.svg" alt="Disable icon" title="Disable user account">
+								</a>
+							</div>
+						</article>
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</section>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/admin/search.js"></script>
+{% endblock %}
