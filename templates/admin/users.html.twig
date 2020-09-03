@@ -37,7 +37,7 @@
 										Not disabled
 									{% endif %}
 								</p>
-								<a href="" class="direct-reports">
+								<a href="{{path('aReports', {'id': user.id})}}" class="direct-reports">
 									Reports
 								</a>
 								<div class="a-user-actions">
@@ -67,5 +67,5 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script src="/js/admin/search.js"></script>
+	<script src="/js/admin/users.js"></script>
 {% endblock %}

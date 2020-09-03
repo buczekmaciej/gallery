@@ -1,0 +1,32 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Create category
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/categories/new.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(create)}}
+	<div class="ggl-box">
+		{{form_widget(create.Name)}}
+		{{form_label(create.Name)}}
+	</div>
+	<div class="org">
+		<p class="tags">
+			Tags
+		</p>
+		{% for tag in create.Tags %}
+			<div class="elem">
+				{{form_widget(tag)}}
+				{{form_label(tag)}}
+			</div>
+		{% endfor %}
+	</div>
+	{{form_widget(create.Submit)}}
+	{{form_widget(create._token)}}
+	{{form_end(create, {'render_rest': false})}}
+{% endblock %}

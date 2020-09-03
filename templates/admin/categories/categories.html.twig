@@ -1,0 +1,69 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Categories
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/categories/categories.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="admin-categories-container">
+		<section class="search-data">
+			<input type="text" class="admin-search-inp" placeholder="Provide conditioning data...">
+		</section>
+		<a href="{{path('aCNew')}}" class="new-category">
+			Create new
+		</a>
+		<section class="adm-categories-display">
+			<article class="adm-categories-header">
+				<p>
+					ID
+				</p>
+				<p>
+					Name
+				</p>
+				<p>
+					Tags
+				</p>
+				<p>
+					Actions
+				</p>
+			</article>
+			{% for item in categories %}
+				<article class="adm-categories-elem search-field">
+					<p class='categories-id'>
+						{{item.id}}
+					</p>
+					<p class="categories-name">
+						{{item.Name}}
+					</p>
+					<p class="categories-tags">
+						{% for tag in item.tags %}
+							{% if loop.last == false %}
+								{{tag.Name}},
+							{% else %}
+								{{tag.Name}}
+							{% endif %}
+						{% endfor %}
+					</p>
+					<p class="categories-actions">
+						<a href="{{path('aCEdit', {'id': item.id})}}" class="cat-edit-link">
+							Edit
+						</a>
+						<a href="{{path('aCRemove', {'id': item.id})}}" class="cat-delete-link">
+							Delete
+						</a>
+					</p>
+				</article>
+			{% endfor %}
+			{{knp_pagination_render(categories)}}
+		</section>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/admin/categories.js"></script>
+{% endblock %}

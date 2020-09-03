@@ -1,0 +1,70 @@
+form {
+  height: 65vh;
+  width: 50%;
+  margin: 1.5rem auto;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  border-radius: 16px;
+}
+
+.ggl-box {
+  position: relative;
+  width: 100%;
+  margin: 1.25rem 0;
+  height: 20%;
+}
+.ggl-box input {
+  width: 100%;
+  height: 100%;
+  padding: 0.625rem 0.75rem;
+  font-size: 1rem;
+  letter-spacing: 0.062rem;
+  margin-bottom: 1.875rem;
+  border: 1px solid #ccc;
+  color: #fff;
+  background-color: transparent;
+  outline: transparent;
+  border-radius: 8px;
+}
+.ggl-box label {
+  position: absolute;
+  top: -0.5rem;
+  left: 10px;
+  font-size: 0.75rem;
+  height: 10px;
+  padding: 0 5px;
+  color: #fff;
+  background-color: rgb(39, 57, 75);
+}
+
+.org {
+  display: flex;
+  flex-wrap: wrap;
+}
+.tags {
+  width: 100%;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.elem {
+  width: 23%;
+  margin: 0.5rem 0.25rem;
+}
+.elem input,
+.elem label {
+  cursor: pointer;
+}
+
+button {
+  border: none;
+  outline: none;
+  color: #fff;
+  background-color: rgb(24, 41, 58);
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  border-radius: 0.312rem;
+  font-size: 1.2rem;
+  width: 64%;
+  margin: 2.5rem auto;
+}

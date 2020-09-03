@@ -1,0 +1,89 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Uploads
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/uploads.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="admin-uploads-container">
+		<section class="search-data">
+			<input type="text" class="admin-search-inp" placeholder="Provide conditioning data...">
+		</section>
+		<section class="adm-upload-display">
+			<article class="adm-upload-header">
+				<p>
+					ID
+				</p>
+				<p>
+					Image
+				</p>
+				<p>
+					Category
+				</p>
+				<p>
+					User
+				</p>
+				<p>
+					Date
+				</p>
+				<p>
+					Likes
+				</p>
+				<p>
+					Delete
+				</p>
+			</article>
+			{% for item in uploads %}
+				<article class="adm-upload-elem search-field">
+					<p class='upload-id'>
+						{{item.id}}
+					</p>
+					<p class="upload-img" data-src="{{item.Image}}">
+						Image
+					</p>
+					<p class="upload-cat">
+						{% if item.category %}
+							{{item.category.Name}}
+						{% else %}
+							Uncategorized
+						{% endif %}
+					</p>
+					<p class="upload-user">
+						{{item.uploader.Username}}
+					</p>
+					<p class="upload-date">
+						{{item.addedAt|date('D M d, Y')}}
+					</p>
+					<p class="upload-likes">
+						{% set likes = item.likes|length %}
+						{% if likes >= 0 and likes < 1000 %}
+							{{likes}}
+						{% endif %}
+						{% if likes > 999 and likes < 1000000 %}
+							{{(likes / 1000)|round(1, 'floor')}}K
+						{% endif %}
+						{% if likes > 1000000 and likes < 1000000000 %}
+							{{(likes / 1000000)|round(1, 'floor')}}M
+						{% endif %}
+						{% if likes > 1000000000 and likes < 1000000000 %}
+							{{(likes / 1000000000)|round(1, 'floor')}}B
+						{% endif %}
+					</p>
+					<a href="{{path('aURemove', {'id': item.id})}}" class="upload-delete">
+						Delete
+					</a>
+				</article>
+			{% endfor %}
+			{{knp_pagination_render(uploads)}}
+		</section>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/admin/uploads.js"></script>
+{% endblock %}

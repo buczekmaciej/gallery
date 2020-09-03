@@ -20,10 +20,13 @@
 				{{app.user.roles|last|lower|split('_').1|capitalize}}
 			</span>
 		</p>
+		<a href="{{path('homepage')}}" class="home-link active">
+			App
+		</a>
 		<a href="{{path('dashboard')}}" {% if app.request.get('_route') == 'dashboard' %} class="home-link active" {% else %} class="home-link" {% endif %}>
 			Home
 		</a>
-		<a href="" {% if app.request.get('_route') == '' %} class="reports-link active" {% else %} class="reports-link" {% endif %}>
+		<a href="{{path('aReports', {'page': 1})}}" {% if app.request.get('_route') == 'aReports' %} class="reports-link active" {% else %} class="reports-link" {% endif %}>
 			Reports
 			{% if app.session.get('pending') %}
 				<span class="exsist-pending"></span>
@@ -32,13 +35,13 @@
 		<a href="{{path('aUsers')}}" {% if app.request.get('_route') == 'aUsers' %} class="users-link active" {% else %} class="users-link" {% endif %}>
 			Users
 		</a>
-		<a href="" {% if app.request.get('_route') == '' %} class="uploads-link active" {% else %} class="uploads-link" {% endif %}>
+		<a href="{{path('aUploads', {'page': 1})}}" {% if app.request.get('_route') == 'aUploads' %} class="uploads-link active" {% else %} class="uploads-link" {% endif %}>
 			Uploads
 		</a>
-		<a href="" {% if app.request.get('_route') == '' %} class="categories-link active" {% else %} class="categories-link" {% endif %}>
+		<a href="{{path('aCategories', {'page': 1})}}" {% if app.request.get('_route') in ['aCategories', 'aCNew', 'aCEdit'] %} class="categories-link active" {% else %} class="categories-link" {% endif %}>
 			Categories
 		</a>
-		<a href="" {% if app.request.get('_route') == '' %} class="tags-link active" {% else %} class="tags-link" {% endif %}>
+		<a href="{{path('aTags', {'page': 1})}}" {% if app.request.get('_route') in ['aTags'] %} class="tags-link active" {% else %} class="tags-link" {% endif %}>
 			Tags
 		</a>
 		<a href="{{path('logout')}}" class="logout-link">

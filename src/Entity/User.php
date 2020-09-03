@@ -40,11 +40,6 @@ class User implements UserInterface
     private $resetHash;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Gallery", mappedBy="saves")
-     */
-    private $collection;
-
-    /**
      * @ORM\Column(type="string", length=5, nullable=true)
      */
     private $colorSchema = 'light';
@@ -81,7 +76,6 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->collection = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->views = new ArrayCollection();
         $this->uploads = new ArrayCollection();
@@ -137,32 +131,6 @@ class User implements UserInterface
     public function setResetHash(string $resetHash): self
     {
         $this->resetHash = $resetHash;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Gallery[]
-     */
-    public function getCollection(): Collection
-    {
-        return $this->collection;
-    }
-
-    public function addCollection(Gallery $collection): self
-    {
-        if (!$this->collection->contains($collection)) {
-            $this->collection[] = $collection;
-        }
-
-        return $this;
-    }
-
-    public function removeCollection(Gallery $collection): self
-    {
-        if ($this->collection->contains($collection)) {
-            $this->collection->removeElement($collection);
-        }
 
         return $this;
     }
