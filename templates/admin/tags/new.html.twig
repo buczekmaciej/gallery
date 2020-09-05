@@ -1,0 +1,20 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Create tag
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/tags/new.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(create)}}
+	<div class="ggl-box">
+		{{form_widget(create.Name)}}
+		{{form_label(create.Name)}}
+	</div>
+	{{form_widget(create.Submit)}}
+	{{form_end(create)}}
+{% endblock %}

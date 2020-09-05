@@ -41,7 +41,7 @@
 		<a href="{{path('aCategories', {'page': 1})}}" {% if app.request.get('_route') in ['aCategories', 'aCNew', 'aCEdit'] %} class="categories-link active" {% else %} class="categories-link" {% endif %}>
 			Categories
 		</a>
-		<a href="{{path('aTags', {'page': 1})}}" {% if app.request.get('_route') in ['aTags'] %} class="tags-link active" {% else %} class="tags-link" {% endif %}>
+		<a href="{{path('aTags', {'page': 1})}}" {% if app.request.get('_route') in ['aTags', 'aTNew', 'aTEdit'] %} class="tags-link active" {% else %} class="tags-link" {% endif %}>
 			Tags
 		</a>
 		<a href="{{path('logout')}}" class="logout-link">

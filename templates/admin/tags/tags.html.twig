@@ -1,0 +1,57 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Tags
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/tags/tags.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="admin-tags-container">
+		<section class="search-data">
+			<input type="text" class="admin-search-inp" placeholder="Provide conditioning data...">
+		</section>
+		<a href="{{path('aTNew')}}" class="new-category">
+			Create new
+		</a>
+		<section class="adm-tags-display">
+			<article class="adm-tags-header">
+				<p>
+					ID
+				</p>
+				<p>
+					Name
+				</p>
+				<p>
+					Actions
+				</p>
+			</article>
+			{% for item in tags %}
+				<article class="adm-tags-elem search-field">
+					<p class='tags-id'>
+						{{item.id}}
+					</p>
+					<p class="tags-name">
+						{{item.Name}}
+					</p>
+					<p class="tags-actions">
+						<a href="{{path('aTEdit', {'id': item.id})}}" class="cat-edit-link">
+							Edit
+						</a>
+						<a href="{{path('aTRemove', {'id': item.id})}}" class="cat-delete-link">
+							Delete
+						</a>
+					</p>
+				</article>
+			{% endfor %}
+			{{knp_pagination_render(tags)}}
+		</section>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/admin/tags.js"></script>
+{% endblock %}

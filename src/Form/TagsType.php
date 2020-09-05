@@ -14,17 +14,19 @@ class TagsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Name', TextType::class, ['attr'=>['placeholder'=>'Name...']])
-            ->add('Submit', SubmitType::class, ['label'=>'Create'])
-        ;
+            ->add('Name', TextType::class, [
+                'label' => 'Tag name'
+            ])
+            ->add('Submit', SubmitType::class, [
+                'label' => 'Create'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Tags::class,
-        ]);
+        $resolver->setDefaults([]);
     }
+
     public function getPrefix()
     {
         return 'tags';

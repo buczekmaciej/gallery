@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Form\CategoryType;
 use App\Form\CEditType;
+use App\Form\TagsType;
+use App\Form\TEditType;
 use App\Repository\CategoriesRepository;
 use App\Repository\GalleryRepository;
 use App\Repository\ReportsRepository;
@@ -17,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -93,7 +96,7 @@ class AdminController extends AbstractController
 
             return $this->redirectToRoute('aUsers', []);
         } catch (QueryException $e) {
-            throw new Exception("Problem appeared during changing. Try again. Error code: {$e->getMessage()}", 500);
+            throw new Exception("Problem appeared during changing. Try again. Error code: {$e->getMessage()}");
         }
     }
 
@@ -112,7 +115,7 @@ class AdminController extends AbstractController
 
             return $this->redirectToRoute('aUsers', []);
         } catch (QueryException $e) {
-            throw new Exception("Problem appeared during changing. Try again. Error code: {$e->getMessage()}", 500);
+            throw new Exception("Problem appeared during changing. Try again. Error code: {$e->getMessage()}");
         }
     }
 
@@ -131,7 +134,7 @@ class AdminController extends AbstractController
 
             return $this->redirectToRoute('aUsers', []);
         } catch (QueryException $e) {
-            throw new Exception("Problem appeared during changing. Try again. Error code: {$e->getMessage()}", 500);
+            throw new Exception("Problem appeared during changing. Try again. Error code: {$e->getMessage()}");
         }
     }
 
@@ -158,7 +161,7 @@ class AdminController extends AbstractController
                 'page' => 1
             ]);
         } catch (QueryException $e) {
-            throw new Exception("Something went wrong try again. Error: {$e->getMessage()}", 500);
+            throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
         }
     }
 
@@ -183,19 +186,20 @@ class AdminController extends AbstractController
         if ($create->isSubmitted() && $create->isValid()) {
             try {
                 $data = $create->getData();
+                if (!$this->cr->findOneBy(['Name' => $data['Name']])) {
+                    $cat = new \App\Entity\Categories;
+                    $cat->setName($data['Name']);
+                    foreach ($data['Tags'] as $t) $cat->addTag($t);
 
-                $cat = new \App\Entity\Categories;
-                $cat->setName($data['Name']);
-                foreach ($data['Tags'] as $t) $cat->addTag($t);
+                    $this->em->persist($cat);
+                    $this->em->flush();
 
-                $this->em->persist($cat);
-                $this->em->flush();
-
-                return $this->redirectToRoute('aCategories', [
-                    'page' => 1
-                ]);
+                    return $this->redirectToRoute('aCategories', [
+                        'page' => 1
+                    ]);
+                } else throw new Exception("Such category exists already");
             } catch (QueryException $e) {
-                throw new Exception("Something went wrong try again. Error: {$e->getMessage()}", 500);
+                throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
             }
         }
 
@@ -214,23 +218,24 @@ class AdminController extends AbstractController
         $cat = $this->cr->findOneBy(['id' => $id]);
 
         if ($edit->isSubmitted() && $edit->isValid()) {
-            if ($cat) {
-                try {
+            try {
+                if ($cat) {
                     $data = $edit->getData();
+                    if (!$this->cr->findOneBy(['Name' => $data['Name']])) {
+                        $cat->setName($data['Name']);
+                        $cat->getTags()->clear();
+                        foreach ($data['Tags'] as $t) $cat->addTag($t);
 
-                    $cat->setName($data['Name']);
-                    $cat->getTags()->clear();
-                    foreach ($data['Tags'] as $t) $cat->addTag($t);
+                        $this->em->flush();
 
-                    $this->em->flush();
-
-                    return $this->redirectToRoute('aCategories', [
-                        'page' => 1
-                    ]);
-                } catch (QueryException $e) {
-                    throw new Exception("Something went wrong try again. Error: {$e->getMessage()}", 500);
-                }
-            } else throw new Exception("Category not found", 404);
+                        return $this->redirectToRoute('aCategories', [
+                            'page' => 1
+                        ]);
+                    } else throw new Exception("Such category exists already");
+                } else throw new NotFoundHttpException("Category not found");
+            } catch (QueryException $e) {
+                throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
+            }
         }
 
         return $this->render('admin/categories/edit.html.twig', [
@@ -246,13 +251,15 @@ class AdminController extends AbstractController
     {
         try {
             $category = $this->cr->findOneBy(['id' => $id]);
-            $this->em->remove($category);
-            $this->em->flush();
-            return $this->redirectToRoute('aCategories', [
-                'page' => 1
-            ]);
+            if ($category) {
+                $this->em->remove($category);
+                $this->em->flush();
+                return $this->redirectToRoute('aCategories', [
+                    'page' => 1
+                ]);
+            } else throw new NotFoundHttpException("Category not found");
         } catch (QueryException $e) {
-            throw new Exception("Something went wrong try again. Error: {$e->getMessage()}", 500);
+            throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
         }
     }
 
@@ -264,5 +271,91 @@ class AdminController extends AbstractController
         return $this->render('admin/tags/tags.html.twig', [
             'tags' => $paginator->paginate($this->tr->findAll(), $request->query->getInt('page', 1), 15)
         ]);
+    }
+
+    /**
+     * @Route("/admin/tags/create", name="aTNew", methods={"GET", "POST"})
+     */
+    public function aTNew(Request $request)
+    {
+        $create = $this->createForm(TagsType::class);
+        $create->handleRequest($request);
+
+        if ($create->isSubmitted() && $create->isValid()) {
+            try {
+                $data = $create->getData();
+
+                if ($this->tr->findOneBy(['Name' => $data['Name']])) throw new Exception("Such tag exists already");
+                else {
+                    $tag = new \App\Entity\Tags;
+                    $tag->setName($data['Name']);
+
+                    $this->em->persist($tag);
+                    $this->em->flush();
+
+                    return $this->redirectToRoute('aTags', [
+                        'page' => 1
+                    ]);
+                }
+            } catch (QueryException $e) {
+                throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
+            }
+        }
+
+        return $this->render('admin/tags/new.html.twig', [
+            'create' => $create->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/tag/{id}/edit", name="aTEdit", methods={"GET", "POST"})
+     */
+    public function aTEdit(int $id, Request $request)
+    {
+        $edit = $this->createForm(TEditType::class, null, ['id' => $id]);
+        $edit->handleRequest($request);
+
+        if ($edit->isSubmitted() && $edit->isValid()) {
+            try {
+                $tag = $this->cr->findOneBy(['id' => $id]);
+
+                if ($tag) {
+                    $data = $edit->getData();
+                    if (!$this->tr->findOneBy(['Name' => $data['Name']])) {
+                        $tag->setName($data['Name']);
+                        $this->em->flush();
+
+                        return $this->redirectToRoute('aTags', [
+                            'page' => 1
+                        ]);
+                    } else throw new Exception("Such tag exists already");
+                } else throw new NotFoundHttpException("Tag not found");
+            } catch (QueryException $e) {
+                throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
+            }
+        }
+
+        return $this->render('admin/tags/edit.html.twig', [
+            'edit' => $edit->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/tag/{id}/remove", name="aTRemove", methods={"GET"})
+     */
+    public function aTRemove(int $id)
+    {
+        try {
+            $tag = $this->tr->findOneBy(['id' => $id]);
+            if ($tag) {
+                $this->em->remove($tag);
+                $this->em->flush();
+                return $this->redirectToRoute('aTags', [
+                    'page' => 1
+                ]);
+            } else throw new NotFoundHttpException("Tag not found");
+        } catch (QueryException $e) {
+            throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
+        }
     }
 }

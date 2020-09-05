@@ -42,7 +42,6 @@ class CEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('id');
-        $resolver->setAllowedTypes('data', [Categories::class, 'object']);
         $resolver->setDefaults([]);
     }
 

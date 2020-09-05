@@ -1,0 +1,20 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Edit tag - #{{app.request.attributes.get('id')}}
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/tags/edit.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(edit)}}
+	<div class="ggl-box">
+		{{form_widget(edit.Name)}}
+		{{form_label(edit.Name)}}
+	</div>
+	{{form_widget(edit.Submit)}}
+	{{form_end(edit)}}
+{% endblock %}
