@@ -1,0 +1,23 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Edit reason - #{{app.request.attributes.get('id')}}
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/reports/reasons/edit.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(edit)}}
+	<a href="{{path('aReasons')}}">
+		Back to reasons
+	</a>
+	<div class="ggl-box">
+		{{form_widget(edit.reason)}}
+		{{form_label(edit.reason)}}
+	</div>
+	{{form_widget(edit.submit)}}
+	{{form_end(edit)}}
+{% endblock %}

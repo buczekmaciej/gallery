@@ -1,0 +1,60 @@
+.adm-reasons-container {
+  padding: 2rem 3rem;
+}
+
+.new-reason {
+  color: #fff;
+  background-color: rgb(24, 41, 58);
+  padding: 1rem 2.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.reasons-header {
+  margin-top: 2rem;
+  display: flex;
+  width: 100%;
+  background-color: rgb(24, 41, 58);
+  padding: 0.75rem;
+}
+.reasons-header p:nth-child(1) {
+  flex: 0.5;
+}
+.reasons-header p:nth-child(2) {
+  flex: 2;
+}
+.reasons-header p:nth-child(3) {
+  flex: 0.75;
+}
+
+.reason-element {
+  display: flex;
+  width: 100%;
+  padding: 1.25rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.534);
+}
+.reason-element p:nth-child(1) {
+  flex: 0.5;
+}
+.reason-element p:nth-child(2) {
+  flex: 2;
+}
+.reason-element p:nth-child(3) {
+  flex: 0.75;
+  opacity: 0;
+}
+.reason-element a {
+  color: #fff;
+}
+.reason-element a:first-of-type {
+  margin-right: 1rem;
+}
+.reason-element:hover p:nth-child(3) {
+  opacity: 1;
+}
+
+.no-reasons {
+  margin-top: 2rem;
+  font-size: 2.2rem;
+}

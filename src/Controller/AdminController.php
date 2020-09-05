@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Form\CategoryType;
 use App\Form\CEditType;
+use App\Form\EReasonType;
+use App\Form\NewReasonType;
 use App\Form\TagsType;
 use App\Form\TEditType;
 use App\Repository\CategoriesRepository;
 use App\Repository\GalleryRepository;
+use App\Repository\ReasonsRepository;
 use App\Repository\ReportsRepository;
 use App\Repository\TagsRepository;
 use App\Repository\UserRepository;
@@ -24,13 +27,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    public function __construct(UserRepository $ur, TagsRepository $tr, CategoriesRepository $cr, GalleryRepository $gr, ReportsRepository $rr, SessionInterface $session, EntityManagerInterface $em)
+    public function __construct(UserRepository $ur, TagsRepository $tr, CategoriesRepository $cr, GalleryRepository $gr, ReportsRepository $rr, ReasonsRepository $rsr, SessionInterface $session, EntityManagerInterface $em)
     {
         $this->ur = $ur;
         $this->tr = $tr;
         $this->cr = $cr;
         $this->gr = $gr;
         $this->rr = $rr;
+        $this->rsr = $rsr;
         $this->session = $session;
         $this->em = $em;
     }
@@ -45,9 +49,11 @@ class AdminController extends AbstractController
 
     private function checkPending()
     {
-        $pending = $this->rr->getPendingAmount();
-        if ($pending > 0) $this->session->set('pending', $pending);
-        else if ($pending < 1 && $this->session->get('pending')) $this->session->remove('pending');
+        if (in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+            $pending = $this->rr->getPendingAmount();
+            if ($pending > 0) $this->session->set('pending', $pending);
+            else if ($pending < 1 && $this->session->get('pending')) $this->session->remove('pending');
+        }
     }
 
     /**
@@ -66,11 +72,98 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/reports", name="aReports", methods={"GET"})
      */
-    public function aReports(Request $request)
+    public function aReports()
     {
-        return $this->render('admin/reports.html.twig', [
-            'reports' => $request->query->get('id') ? $this->rr->findBy(['user' => $request->query->get('id')]) : $this->rr->findAll()
+        return $this->render('admin/reports/reports.html.twig', [
+            'reports' => $this->rr->getReports()
         ]);
+    }
+
+    /**
+     * @Route("/admin/reasons", name="aReasons", methods={"GET"})
+     */
+    public function aReasons()
+    {
+        return $this->render('admin/reports/reasons/reasons.html.twig', [
+            'reasons' => $this->rsr->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/reasons/new", name="aNewReason", methods={"GET", "POST"})
+     */
+    public function aNewReason(Request $request)
+    {
+        $new = $this->createForm(NewReasonType::class);
+        $new->handleRequest($request);
+
+        if ($new->isSubmitted() && $new->isValid()) {
+            try {
+                $reason = $new->getData()['reason'];
+                if ($this->rsr->findOneBy(['reason' => $reason])) throw new Exception("Reason already exists");
+                else {
+                    $reas = new \App\Entity\Reasons;
+                    $reas->setReason($reason);
+
+                    $this->em->persist($reas);
+                    $this->em->flush();
+
+                    return $this->redirectToRoute('aReasons', []);
+                }
+            } catch (QueryException $e) {
+                throw new Exception("Something failed, try again. Error: {$e->getMessage()}");
+            }
+        }
+        return $this->render('admin/reports/reasons/new.html.twig', [
+            'create' => $new->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/reason/{id}/edit", name="aEditReason", methods={"GET", "POST"})
+     */
+    public function aEditReason(int $id, Request $request)
+    {
+        $edit = $this->createForm(EReasonType::class, null, ['id' => $id]);
+        $edit->handleRequest($request);
+
+        if ($edit->isSubmitted() && $edit->isValid()) {
+            try {
+                $reason = $edit->getData()['reason'];
+                if ($this->rsr->findOneBy(['reason' => $reason])) throw new Exception("Reason already exists");
+                else {
+                    $reas = $this->rsr->findOneBy(['id' => $id]);
+                    $reas->setReason($reason);
+
+                    $this->em->flush();
+
+                    return $this->redirectToRoute('aReasons', []);
+                }
+            } catch (QueryException $e) {
+                throw new Exception("Something failed, try again. Error: {$e->getMessage()}");
+            }
+        }
+        return $this->render('admin/reports/reasons/edit.html.twig', [
+            'edit' => $edit->createView()
+        ]);
+    }
+
+
+    /**
+     * @Route("/admin/reason/{id}/remove", name="aRRemove", methods={"GET"})
+     */
+    public function aRRemove(int $id)
+    {
+        try {
+            $reason = $this->rsr->findOneBy(['id' => $id]);
+            if ($reason) {
+                $this->em->remove($reason);
+                $this->em->flush();
+                return $this->redirectToRoute('aReasons', []);
+            } else throw new NotFoundHttpException("Reason not found");
+        } catch (QueryException $e) {
+            throw new Exception("Something went wrong try again. Error: {$e->getMessage()}");
+        }
     }
 
     /**

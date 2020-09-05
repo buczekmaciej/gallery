@@ -1,0 +1,23 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Create reason
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/reports/reasons/new.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	{{form_start(create)}}
+	<a href="{{path('aReasons')}}">
+		Back to reasons
+	</a>
+	<div class="ggl-box">
+		{{form_widget(create.reason)}}
+		{{form_label(create.reason)}}
+	</div>
+	{{form_widget(create.submit)}}
+	{{form_end(create)}}
+{% endblock %}

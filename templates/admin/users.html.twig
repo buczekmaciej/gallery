@@ -37,9 +37,6 @@
 										Not disabled
 									{% endif %}
 								</p>
-								<a href="{{path('aReports', {'id': user.id})}}" class="direct-reports">
-									Reports
-								</a>
 								<div class="a-user-actions">
 									{% if "ROLE_ADMIN" in app.user.roles and 1 != user.id %}
 										{% if "ROLE_ADMIN" not in user.roles %}

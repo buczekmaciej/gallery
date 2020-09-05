@@ -1,0 +1,46 @@
+.adm-report-container {
+  padding: 1.5rem 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+}
+
+.search-data {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.admin-search-inp {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.534);
+  color: #fff;
+  width: 90%;
+  font-size: 1.25rem;
+  padding: 0.5rem 0.25rem;
+  outline: transparent;
+}
+.admin-search-inp::placeholder {
+  color: rgba(255, 255, 255, 0.534);
+}
+
+.view-reasons {
+  color: #fff;
+  background-color: rgb(24, 41, 58);
+  height: 9%;
+  padding: 1rem 2.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.reports-container {
+  width: 100%;
+}
+
+.no-reps {
+  font-size: 2rem;
+}

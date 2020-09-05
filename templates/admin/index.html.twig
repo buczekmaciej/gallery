@@ -26,12 +26,14 @@
 		<a href="{{path('dashboard')}}" {% if app.request.get('_route') == 'dashboard' %} class="home-link active" {% else %} class="home-link" {% endif %}>
 			Home
 		</a>
-		<a href="{{path('aReports', {'page': 1})}}" {% if app.request.get('_route') == 'aReports' %} class="reports-link active" {% else %} class="reports-link" {% endif %}>
-			Reports
-			{% if app.session.get('pending') %}
-				<span class="exsist-pending"></span>
-			{% endif %}
-		</a>
+		{% if "ROLE_ADMIN" in app.user.roles %}
+			<a href="{{path('aReports')}}" {% if app.request.get('_route') in ['aReports', 'aReasons', 'aNewReason', 'aEditReason'] %} class="reports-link active" {% else %} class="reports-link" {% endif %}>
+				Reports
+				{% if app.session.get('pending') %}
+					<span class="exsist-pending"></span>
+				{% endif %}
+			</a>
+		{% endif %}
 		<a href="{{path('aUsers')}}" {% if app.request.get('_route') == 'aUsers' %} class="users-link active" {% else %} class="users-link" {% endif %}>
 			Users
 		</a>

@@ -1,0 +1,53 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Reasons
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/reports/reasons/reasons.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="adm-reasons-container">
+		<a href="{{path('aNewReason')}}" class="new-reason">
+			Add reason
+		</a>
+		{% for reason in reasons %}
+			{% if loop.first %}
+				<section class="reasons-header">
+					<p>
+						ID
+					</p>
+					<p>
+						Reason
+					</p>
+					<p>
+						Actions
+					</p>
+				</section>
+			{% endif %}
+			<section class="reason-element">
+				<p>
+					{{reason.id}}
+				</p>
+				<p>
+					{{reason.reason}}
+				</p>
+				<p>
+					<a href="{{path('aEditReason', {'id': reason.id})}}" class="cat-edit-link">
+						Edit
+					</a>
+					<a href="{{path('aRRemove', {'id': reason.id})}}" class="cat-delete-link">
+						Delete
+					</a>
+				</p>
+			</section>
+		{% else %}
+			<p class="no-reasons">
+				No reasons found
+			</p>
+		{% endfor %}
+	</main>
+{% endblock %}

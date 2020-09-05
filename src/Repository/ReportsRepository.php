@@ -28,6 +28,22 @@ class ReportsRepository extends ServiceEntityRepository
             ->getResult()[0]['pending'];
     }
 
+    public function getReports()
+    {
+        $reports = $this->createQueryBuilder('r')->getQuery()->getResult();
+        $reported = [];
+        $open = [];
+        $closed = [];
+
+        foreach ($reports as $r) {
+            if ($r->getStatus() == 'Reported')  $reported[] = $r;
+            if ($r->getStatus() == 'Open')      $open[] = $r;
+            if ($r->getStatus() == 'Closed')    $closed[] = $r;
+        }
+
+        return ['pending' => $reported, 'open' => $open, 'closed' => $closed];
+    }
+
     // /**
     //  * @return Reports[] Returns an array of Reports objects
     //  */
