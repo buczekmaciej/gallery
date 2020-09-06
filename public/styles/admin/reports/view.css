@@ -1,0 +1,28 @@
+.adm-report-container {
+  padding: 1.5rem 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.adm-report-container p {
+  width: 50%;
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+}
+.adm-report-container p span:first-of-type {
+  font-weight: 600;
+}
+
+.adm-report-container a {
+  padding: 1rem 1.5rem;
+  color: #fff;
+  background-color: rgb(24, 41, 58);
+  margin: 0 0 1rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+}
+
+.adm-report-container img {
+  width: 100%;
+}

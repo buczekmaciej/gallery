@@ -25,6 +25,7 @@ class Reports
 
     /**
      * @ORM\Column(type="text")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $note;
 
@@ -38,6 +39,12 @@ class Reports
      * @ORM\Column(type="string", length=255)
      */
     private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Gallery::class, inversedBy="reports")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $item;
 
     public function getId(): ?int
     {
@@ -88,6 +95,18 @@ class Reports
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getItem(): ?Gallery
+    {
+        return $this->item;
+    }
+
+    public function setItem(?Gallery $item): self
+    {
+        $this->item = $item;
 
         return $this;
     }

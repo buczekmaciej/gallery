@@ -7,6 +7,9 @@
 {% block stylesheets %}
 	{{parent()}}
 	<link href="/styles/app/general/explore/explore.css" rel="stylesheet">
+	{% if app.user %}
+		<link href="/styles/report.css" rel="stylesheet">
+	{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -16,6 +19,9 @@
 			Close
 		</span>
 	</div>
+	{% if app.user %}
+		{% include "report.html.twig" %}
+	{% endif %}
 	<main class="explore-expl">
 		<p class="results-for">
 			Showing results for
@@ -99,11 +105,20 @@
 							{{(likes / 1000000000)|round(1, 'floor')}}B
 						{% endif %}
 					</div>
+					{% if app.user %}
+						<span class="report" data-id="{{item.id}}">
+							Report
+						</span>
+					{% endif %}
 					<a href="/gallery/{{item.Image}}" class="download" download>
 						Download
 					</a>
 				</div>
 			</article>
+		{% else %}
+			<p class="empty">
+				No results were found
+			</p>
 		{% endfor %}
 		{{knp_pagination_render(results)}}
 	</main>
@@ -111,6 +126,7 @@
 
 {% block javascripts %}
 	{% if app.user %}
+		<script src="/js/report.js"></script>
 		<script src="/js/view.js"></script>
 	{% endif %}
 {% endblock %}

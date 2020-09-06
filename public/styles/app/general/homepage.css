@@ -62,6 +62,9 @@
 .home-gallery-elem img:not(.uploaded-img) {
   height: 2rem;
 }
+.report {
+  cursor: pointer;
+}
 .download {
   margin-left: auto;
   font-weight: 600;

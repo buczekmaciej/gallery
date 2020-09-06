@@ -27,7 +27,7 @@
 			Home
 		</a>
 		{% if "ROLE_ADMIN" in app.user.roles %}
-			<a href="{{path('aReports')}}" {% if app.request.get('_route') in ['aReports', 'aReasons', 'aNewReason', 'aEditReason'] %} class="reports-link active" {% else %} class="reports-link" {% endif %}>
+			<a href="{{path('aReports')}}" {% if app.request.get('_route') in ['aReports', 'aReport', 'aReasons', 'aNewReason', 'aEditReason'] %} class="reports-link active" {% else %} class="reports-link" {% endif %}>
 				Reports
 				{% if app.session.get('pending') %}
 					<span class="exsist-pending"></span>

@@ -5,27 +5,33 @@ namespace App\Controller;
 use App\Form\ImgLoadType;
 use App\Repository\CategoriesRepository;
 use App\Repository\GalleryRepository;
+use App\Repository\ReasonsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\QueryException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
 {
-    public function __construct(GalleryRepository $gr, EntityManagerInterface $em)
+    public function __construct(GalleryRepository $gr, EntityManagerInterface $em, ReasonsRepository $rr)
     {
         $this->gr = $gr;
         $this->em = $em;
+        $this->rr = $rr;
     }
 
     /**
      * @Route("/", name="homepage", methods={"GET"})
      */
-    public function index(PaginatorInterface $paginator, Request $request)
+    public function index(PaginatorInterface $paginator, Request $request, SessionInterface $session)
     {
+        if (!$session->get('repReasons')) $session->set('repReasons', $this->rr->findAll());
+
         return $this->render('app/homepage.html.twig', [
             'gallery' => $paginator->paginate($this->gr->findBy([], ['addedAt' => 'DESC'], 105), $request->query->getInt('page', 1), 15)
         ]);
@@ -132,5 +138,38 @@ class AppController extends AbstractController
             'upload' => $upload->createView(),
             'error' => $error
         ]);
+    }
+
+    /**
+     * @Route("/report", name="report", methods={"POST"})
+     */
+    public function report(Request $request)
+    {
+        $data = json_decode($request->request->get('data'), TRUE);
+
+        if ($data['id'] && $data['reasonId']) {
+            $reason = $this->rr->findOneBy(['id' => $data['reasonId']]);
+            $img = $this->gr->findOneBy(['id' => $data['id']]);
+
+            if ($reason && $img) {
+                try {
+                    $report = new \App\Entity\Reports;
+                    $report->setUser($this->getUser());
+                    $report->setNote($data['note']);
+                    $report->setReason($reason);
+                    $report->setStatus("Reported");
+                    $report->setItem($img);
+
+                    $this->em->persist($report);
+                    $this->em->flush();
+
+                    return new Response("Success", 200);
+                } catch (QueryException $e) {
+                    return new Response("Execution problem. Error: {$e->getMessage()}", 500);
+                }
+            } else {
+                return new Response('Reason or image not found', 404);
+            }
+        } else return new Response('Data are missing', 400);
     }
 }

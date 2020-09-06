@@ -1,0 +1,51 @@
+{% extends "admin/index.html.twig" %}
+
+{% block addition %}
+	Report - #{{app.request.attributes.get('id')}}
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link href="/styles/admin/reports/view.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+	<main class="adm-report-container">
+		<p>
+			<span>
+				User:
+			</span>
+			<span>
+				{{report.user.Username}}
+			</span>
+		</p>
+		<p>
+			<span>
+				Note:
+			</span>
+			<span>
+				{{report.note}}
+			</span>
+		</p>
+		<p>
+			<span>
+				Reason:
+			</span>
+			<span>
+				{{report.reason.reason}}
+			</span>
+		</p>
+		<p>
+			<span>
+				Status:
+			</span>
+			<span>
+				{{report.status}}
+			</span>
+		</p>
+		<a href="{{path('aRClose', {'id': report.id})}}">
+			Close report
+		</a>
+		<img src="/gallery/{{report.item.Image}}" alt="Image">
+	</main>
+{% endblock %}

@@ -53,10 +53,16 @@ class Gallery
      */
     private $views;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Reports::class, mappedBy="item")
+     */
+    private $reports;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
         $this->views = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +165,37 @@ class Gallery
     {
         if ($this->views->contains($view)) {
             $this->views->removeElement($view);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reports[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Reports $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Reports $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getItem() === $this) {
+                $report->setItem(null);
+            }
         }
 
         return $this;

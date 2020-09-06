@@ -1,0 +1,35 @@
+<div class="report-box">
+	<div class="rep-form">
+		<div class="rep-subbox">
+			<label for="id">
+				Image id
+			</label>
+			<input type="text" class="report-id" name="rep-id" value="" id="id" disabled required>
+		</div>
+		<div class="rep-subbox">
+			<label for="reason">
+				Reason
+			</label>
+			{% set reasons = app.session.get('repReasons') %}
+			<select name="rep-reason" id="reason" required>
+				{% for reason in reasons %}
+					<option value="{{reason.id}}">
+						{{reason.reason|capitalize}}
+					</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="rep-subbox">
+			<label for="note">
+				Note
+			</label>
+			<textarea name="rep-note" id="note"></textarea>
+		</div>
+		<span class="close-form">
+			Close
+		</span>
+		<button class="send-rep" disabled>
+			Report
+		</button>
+	</div>
+</div>

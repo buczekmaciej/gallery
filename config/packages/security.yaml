@@ -31,10 +31,9 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/logout, roles: ROLE_USER }
-    - { path: ^/(reports|report/*), roles: ROLE_ADMIN }
-    - { path: ^/(profile|upload-new), roles: ROLE_USER }
-    - { path: ^/check-view/*, roles: ROLE_USER }
     - { path: ^/admin/*, roles: ROLE_MODERATOR }
+    - { path: ^/(reports|report/*), roles: ROLE_ADMIN }
+    - { path: ^/(profile|upload-new|logout|report), roles: ROLE_USER }
+    - { path: ^/check-view/*, roles: ROLE_USER }
     - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     # - { path: ^/profile, roles: ROLE_USER }

@@ -39,14 +39,6 @@ class AdminController extends AbstractController
         $this->em = $em;
     }
 
-    public function __call($method, $args)
-    {
-        return call_user_func_array(
-            $this->checkPending(),
-            $args
-        );
-    }
-
     private function checkPending()
     {
         if (in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
@@ -61,6 +53,8 @@ class AdminController extends AbstractController
      */
     public function dashboard()
     {
+        $this->checkPending();
+
         return $this->render('admin/dashboard.html.twig', [
             'users' => $this->ur->getNoUsers(),
             'tags' => $this->tr->getNoTags(),
@@ -74,9 +68,41 @@ class AdminController extends AbstractController
      */
     public function aReports()
     {
+        $this->checkPending();
+
         return $this->render('admin/reports/reports.html.twig', [
             'reports' => $this->rr->getReports()
         ]);
+    }
+
+    /**
+     * @Route("/admin/report/{id}", name="aReport", methods={"GET", "POST"})
+     */
+    public function aReport(int $id)
+    {
+        $this->checkPending();
+
+        $report = $this->rr->findOneBy(['id' => $id]);
+        if ($report->getStatus() == 'Reported') {
+            $report->setStatus('Open');
+            $this->em->flush();
+        }
+
+        return $this->render('admin/reports/view.html.twig', [
+            'report' => $report
+        ]);
+    }
+
+    /**
+     * @Route("/admin/report/{id}/close", name="aRClose", methods={"GET"})
+     */
+    public function aRClose(int $id)
+    {
+        $report = $this->rr->findOneBy(['id' => $id]);
+        $report->setStatus('Closed');
+        $this->em->flush();
+
+        return $this->redirectToRoute('aReports', []);
     }
 
     /**
@@ -84,6 +110,8 @@ class AdminController extends AbstractController
      */
     public function aReasons()
     {
+        $this->checkPending();
+
         return $this->render('admin/reports/reasons/reasons.html.twig', [
             'reasons' => $this->rsr->findAll()
         ]);
@@ -94,6 +122,8 @@ class AdminController extends AbstractController
      */
     public function aNewReason(Request $request)
     {
+        $this->checkPending();
+
         $new = $this->createForm(NewReasonType::class);
         $new->handleRequest($request);
 
@@ -124,6 +154,8 @@ class AdminController extends AbstractController
      */
     public function aEditReason(int $id, Request $request)
     {
+        $this->checkPending();
+
         $edit = $this->createForm(EReasonType::class, null, ['id' => $id]);
         $edit->handleRequest($request);
 
@@ -171,6 +203,8 @@ class AdminController extends AbstractController
      */
     public function aUsers()
     {
+        $this->checkPending();
+
         return $this->render('admin/users.html.twig', [
             'users' => $this->ur->getUsers()
         ]);
@@ -236,6 +270,8 @@ class AdminController extends AbstractController
      */
     public function aUploads(PaginatorInterface $paginator, Request $request)
     {
+        $this->checkPending();
+
         return $this->render('admin/uploads.html.twig', [
             'uploads' => $paginator->paginate($this->gr->findAll(), $request->query->getInt('page', 1), 15)
         ]);
@@ -263,6 +299,8 @@ class AdminController extends AbstractController
      */
     public function aCategories(PaginatorInterface $paginator, Request $request)
     {
+        $this->checkPending();
+
         return $this->render('admin/categories/categories.html.twig', [
             'categories' => $paginator->paginate($this->cr->findAll(), $request->query->getInt('page', 1), 15)
         ]);
@@ -273,6 +311,8 @@ class AdminController extends AbstractController
      */
     public function aCNew(Request $request)
     {
+        $this->checkPending();
+
         $create = $this->createForm(CategoryType::class);
         $create->handleRequest($request);
 
@@ -306,6 +346,8 @@ class AdminController extends AbstractController
      */
     public function aCEdit(int $id, Request $request)
     {
+        $this->checkPending();
+
         $edit = $this->createForm(CEditType::class, null, ['id' => $id]);
         $edit->handleRequest($request);
         $cat = $this->cr->findOneBy(['id' => $id]);
@@ -361,6 +403,8 @@ class AdminController extends AbstractController
      */
     public function aTags(PaginatorInterface $paginator, Request $request)
     {
+        $this->checkPending();
+
         return $this->render('admin/tags/tags.html.twig', [
             'tags' => $paginator->paginate($this->tr->findAll(), $request->query->getInt('page', 1), 15)
         ]);
@@ -371,6 +415,8 @@ class AdminController extends AbstractController
      */
     public function aTNew(Request $request)
     {
+        $this->checkPending();
+
         $create = $this->createForm(TagsType::class);
         $create->handleRequest($request);
 
@@ -405,6 +451,8 @@ class AdminController extends AbstractController
      */
     public function aTEdit(int $id, Request $request)
     {
+        $this->checkPending();
+
         $edit = $this->createForm(TEditType::class, null, ['id' => $id]);
         $edit->handleRequest($request);
 

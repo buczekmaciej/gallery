@@ -20,22 +20,33 @@
 		<section class="reports-container">
 			{% if reports.pending is not empty or reports.open is not empty or reports.closed is not empty %}
 				{% for label, reps in reports %}
-					{% if report is not empty %}
-						<p class={% if loop.first %} "section-label showing" {% else %} "section-label" {% endif %}>
-							{{label|capitalize}}
-						</p>
-						<div class="reports-subsection">
+					{% if reps is not empty %}
+						<div class={% if loop.first %} "reports-subsection showing" {% else %} "reports-subsection" {% endif %}>
+							<p class="section-label">
+								{{label|capitalize}}
+								({{reps|length}})
+							</p>
 							{% for item in reps %}
-								<div class="report-item">
+								<div class="report-item search-field">
+									<p class="report-id">
+										{{item.id}}
+									</p>
 									<p class="report-user">
 										{{item.user.Username}}
 									</p>
 									<p class="report-note">
-										{{item.note}}
+										{% if item.note != "" %}
+											{{item.note}}
+										{% else %}
+											Not provided
+										{% endif %}
 									</p>
 									<p class="report-reason">
 										{{item.reason.reason}}
 									</p>
+									<a href="{{path('aReport', {'id': item.id})}}">
+										Open
+									</a>
 								</div>
 							{% endfor %}
 						</div>
@@ -48,4 +59,8 @@
 			{% endif %}
 		</section>
 	</main>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/js/admin/reports.js"></script>
 {% endblock %}

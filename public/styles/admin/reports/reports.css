@@ -40,6 +40,44 @@
 .reports-container {
   width: 100%;
 }
+.reports-container a {
+  color: #fff;
+  font-weight: 600;
+}
+.reports-subsection {
+  display: flex;
+  flex-direction: column;
+}
+.section-label {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.showing {
+  font-weight: 600;
+  cursor: default;
+}
+.report-item {
+  width: 100%;
+  display: none;
+  align-items: center;
+  padding: 1.15rem 0;
+}
+.showing .report-item {
+  display: flex;
+}
+.report-item p {
+  flex: 1;
+}
+.report-item p:nth-child(1) {
+  flex: 0.2;
+}
+.report-item p:nth-child(2) {
+  flex: 0.5;
+}
+.report-item p:last-of-type {
+  flex: 0.75;
+}
 
 .no-reps {
   font-size: 2rem;
